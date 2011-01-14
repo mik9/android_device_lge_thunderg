@@ -35,6 +35,7 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/lib/hw/gralloc.thunderg.so:system/lib/hw/gralloc.thunderg.so \
+    device/lge/thunderg/files/lib/hw/copybit.thunderg.so:system/lib/hw/copybit.thunderg.so \
     device/lge/thunderg/files/lib/hw/lights.thunderg.so:system/lib/hw/lights.thunderg.so \
     device/lge/thunderg/files/lib/hw/sensors.thunderg.so:system/lib/hw/sensors.thunderg.so
 
