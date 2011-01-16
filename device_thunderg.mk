@@ -26,13 +26,15 @@ $(call inherit-product, build/target/product/full.mk)
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
 PRODUCT_NAME := full_thunderg
 PRODUCT_DEVICE := thunderg
-PRODUCT_BRAND := LG
+PRODUCT_BRAND := LGE
 PRODUCT_MANUFACTURER := LGE
+PRODUCT_MODEL := LG-P500
 
 # Board-specific init
 PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/init.thunderg.rc:root/init.thunderg.rc \
-    device/lge/thunderg/files/initlogo.rle:root/initlogo.rle
+    device/lge/thunderg/files/initlogo.rle:root/initlogo.rle \
+#    device/lge/thunderg/files/init.qcom.rc:root/init.qcom.rc \
 
 # Backlight
 PRODUCT_COPY_FILES += \
@@ -102,7 +104,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.lge.vibrator_amp=125 \
     ro.opengles.version=131072 \
     dalvik.vm.heapsize=32m \
-    ro.product.model="LG P500"
+    ro.product.model="LG P500" \
+    persist.cust.tel.eons=1 \
+    dalvik.vm.dexopt-flags=m=y \
+    dalvik.vm.execution-mode=int:jit
+
 
 # RIL
 PRODUCT_COPY_FILES += \
