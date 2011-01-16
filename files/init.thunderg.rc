@@ -143,13 +143,51 @@ on property:init.svc.hcid=running
 # Make sure we startup btld before bluetoothd
 # Set target address to emulator host loopback IF
 # Limit baudrate to 460800 to ensure reliable uart operation
-service btld /system/bin/logwrapper /system/bin/btld -pf /system/bin/BCM4325D1_004.002.004.0218.0248.hcd -hb 4000000 -lpm 1
-    user root			
-    group bluetooth net_bt_admin			
-    disabled			
-    oneshot			
+#service btld /system/bin/logwrapper /system/bin/btld -pf /system/bin/BCM4325D1_004.002.004.0218.0248.hcd -hb 4000000 -lpm 1
+#    user root			
+#    group bluetooth net_bt_admin			
+#    disabled			
+#    oneshot			
+
+## mik_os bluetooth test
+service btld /system/bin/logwrapper /system/bin/btld -hb 3000000 -hp /dev/s3c_serial1 -lpm 1
+    user root
+    group bluetooth net_bt_admin
+    disabled
+    oneshot
+
+service hfag /system/bin/sdptool add --channel=10 HFAG
+    user bluetooth
+    group bluetooth net_bt_admin
+    disabled
+    oneshot
+
+service hsag /system/bin/sdptool add --channel=11 HSAG
+    user bluetooth
+    group bluetooth net_bt_admin
+    disabled
+    oneshot
+
+service opush /system/bin/sdptool add --channel=12 OPUSH
+    user bluetooth
+    group bluetooth net_bt_admin
+    disabled
+    oneshot
+
+service pbap /system/bin/sdptool add --channel=19 PBAP
+    user bluetooth
+    group bluetooth net_bt_admin
+    disabled
+    oneshot
+
+service hciattach /system/bin/brcm_patchram_plus -d --baudrate 3000000 --patchram /system/bin/BCM4325D1_004.002.004.0218.0248.hcd --enable_hci /dev/ttyHS0
+    user bluetooth
+    group bluetooth net_bt_admin
+    disabled
+    oneshot
+## mik_os bluetooth end
 				
-service bluetoothd /system/bin/bluetoothd -n			
+service bluetoothd /system/bin/bluetoothd -n /etc/blutooth/main.conf		
     socket bluetooth stream 660 bluetooth bluetooth			
     socket dbus_bluetooth stream 660 bluetooth bluetooth			
     # init.rc does not yet support applying capabilities, so run as root and			

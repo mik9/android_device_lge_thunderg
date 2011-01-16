@@ -17,8 +17,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_KERNEL):kernel
 
 PRODUCT_PACKAGES += \
-	hwprops \
-    libOmxCore
+	libmm-omxcore \
+    libOmxCore \
+    brcm_patchram_plus \
 
 $(call inherit-product, build/target/product/full.mk)
 
@@ -166,3 +167,9 @@ PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/lib/libqcomm_omx.so:system/lib/libqcomm_omx.so \
     device/lge/thunderg/files/lib/libstagefright_omx.so:system/lib/libstagefright_omx.so \
     device/lge/thunderg/files/lib/libopencore_common.so:system/lib/libopencore_common.so \
+
+# Bluetooth
+PRODUCT_COPY_FILES += \
+    device/lge/thunderg/files/bin/BCM4325D1_004.002.004.0218.0248.hcd:system/bin/BCM4325D1_004.002.004.0218.0248.hcd \
+    device/lge/thunderg/files/bin/btld:system/bin/btld \
+
