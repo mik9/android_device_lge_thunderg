@@ -28,11 +28,15 @@ BOARD_USES_QCOM_LIBS := true
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
 
+BOARD_USE_USB_MASS_STORAGE_SWITCH := true
+
 BOARD_WPA_SUPPLICANT_DRIVER := WEXT
 BOARD_WLAN_DEVICE := wlan0
 WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/wireless.ko"
 WIFI_DRIVER_MODULE_ARG := "firmware_path=/system/etc/wl/rtecdc.bin nvram_path=/system/etc/wl/nvram.txt"
 WIFI_DRIVER_MODULE_NAME := wireless
+WIFI_DRIVER_FW_STA_PATH := "/system/etc/wl/rtecdc.bin"
+WIFI_DRIVER_FW_AP_PATH := "/system/etc/wl/rtecdc_apsta.bin"
 
 BOARD_EGL_CFG := device/lge/thunderg/files/lib/egl/egl.cfg
 
