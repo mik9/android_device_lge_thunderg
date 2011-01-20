@@ -20,6 +20,7 @@ PRODUCT_PACKAGES += \
 	libmm-omxcore \
     libOmxCore \
     brcm_patchram_plus \
+    libaudio.thunderg
 
 $(call inherit-product, build/target/product/full.mk)
 
