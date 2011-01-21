@@ -29,6 +29,11 @@ PRODUCT_DEVICE := thunderg
 PRODUCT_BRAND := LGE
 PRODUCT_MANUFACTURER := LGE
 PRODUCT_MODEL := LG-P500
+# Keylayouts
+PRODUCT_COPY_FILES += \
+    device/lge/thunderg/files/thunder_keypad.kl:system/usr/keylayout/thunder_keypad.kl \
+    device/lge/thunderg/files/7k_handset.kl:system/usr/keylayout/7k_handset.kl \
+    device/lge/thunderg/files/thunder_keypad.kcm.bin:system/usr/keychars/thunder_keypad.kcm.bin \
 
 # Board-specific init
 PRODUCT_COPY_FILES += \
