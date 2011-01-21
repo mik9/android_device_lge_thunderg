@@ -57,8 +57,12 @@ PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/lib/egl/libGLESv2_adreno200.so:system/lib/egl/libGLESv2_adreno200.so \
     device/lge/thunderg/files/lib/egl/libq3dtools_adreno200.so:system/lib/egl/libq3dtools_adreno200.so
 
+# Camera
 PRODUCT_COPY_FILES += \
-    device/lge/thunderg/files/lib/liboemcamera.so:system/lib/liboemcamera.so
+    device/lge/thunderg/files/lib/liboemcamera.so:system/lib/liboemcamera.so \
+    device/lge/thunderg/files/lib/libmmjpeg.so:system/lib/libmmjpeg.so \
+    device/lge/thunderg/files/lib/libmmipl.so:system/lib/libmmipl.so \
+    
 
 # Wifi
 PRODUCT_COPY_FILES += \

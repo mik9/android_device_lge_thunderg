@@ -1,4 +1,5 @@
-USE_CAMERA_STUB := true
+USE_CAMERA_STUB:= false
+BOARD_USE_FROYO_LIBCAMERA := true
 
 # inherit from the proprietary version
 -include vendor/lge/thunderg/BoardConfigVendor.mk
