@@ -1,13 +1,13 @@
-ifeq ($(TARGET_BOOTLOADER_BOARD_NAME),thunderg)
+ifeq ($(TARGET_BOOTLOADER_BOARD_NAME),z71)
 
-## Ugly hack: override default libaudio
-MODULE.TARGET.SHARED_LIBRARIES.libaudio :=
 
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 LOCAL_MODULE_TAGS := optional
 
-LOCAL_MODULE := libaudio
+LOCAL_MODULE := libaudio.z71
+LOCAL_PRELINK_MODULE := false
+LOCAL_BUILT_MODULE_STEM := libaudio
 
 LOCAL_SHARED_LIBRARIES := \
     libcutils \
@@ -33,6 +33,8 @@ ifeq ($(BOARD_HAVE_BLUETOOTH),true)
 endif
 
 include $(BUILD_SHARED_LIBRARY)
+
+PRODUCT_COPY_FILES += $(LOCAL_BUILT_MODULE):system/lib/libaudio.so
 
 endif
 
