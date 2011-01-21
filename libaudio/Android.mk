@@ -1,11 +1,11 @@
-ifeq ($(TARGET_BOOTLOADER_BOARD_NAME),z71)
+ifeq ($(TARGET_BOOTLOADER_BOARD_NAME),thunderg)
 
 
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 LOCAL_MODULE_TAGS := optional
 
-LOCAL_MODULE := libaudio.z71
+LOCAL_MODULE := libaudio.thunderg
 LOCAL_PRELINK_MODULE := false
 LOCAL_BUILT_MODULE_STEM := libaudio
 
