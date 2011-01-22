@@ -1,10 +1,3 @@
-$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
-
-# The gps config appropriate for this device
-$(call inherit-product, device/common/gps/gps_us_supl.mk)
-
-$(call inherit-product-if-exists, vendor/lge/thunderg/thunderg-vendor.mk)
-
 DEVICE_PACKAGE_OVERLAYS += device/lge/thunderg/overlay
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
@@ -20,15 +13,13 @@ PRODUCT_PACKAGES += \
 	libmm-omxcore \
     libOmxCore \
     brcm_patchram_plus \
+    libaudio.thunderg \
+    gps.thuderg
 
-$(call inherit-product, build/target/product/full.mk)
+# Publish that we support the live wallpaper feature.
+PRODUCT_COPY_FILES += \
+    packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:/system/etc/permissions/android.software.live_wallpaper.xml
 
-PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
-PRODUCT_NAME := full_thunderg
-PRODUCT_DEVICE := thunderg
-PRODUCT_BRAND := LGE
-PRODUCT_MANUFACTURER := LGE
-PRODUCT_MODEL := LG-P500
 # Keylayouts
 PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/thunder_keypad.kl:system/usr/keylayout/thunder_keypad.kl \
@@ -39,7 +30,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/init.thunderg.rc:root/init.thunderg.rc \
     device/lge/thunderg/files/initlogo.rle:root/initlogo.rle \
-#    device/lge/thunderg/files/init.qcom.rc:root/init.qcom.rc \
 
 # Backlight
 PRODUCT_COPY_FILES += \
@@ -55,14 +45,19 @@ PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/lib/hw/sensors.thunderg.so:system/lib/hw/sensors.thunderg.so \
     device/lge/thunderg/files/bin/ami304d:system/bin/ami304d \
 
+# 3D
 PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/lib/egl/libEGL_adreno200.so:system/lib/egl/libEGL_adreno200.so \
     device/lge/thunderg/files/lib/egl/libGLESv1_CM_adreno200.so:system/lib/egl/libGLESv1_CM_adreno200.so \
     device/lge/thunderg/files/lib/egl/libGLESv2_adreno200.so:system/lib/egl/libGLESv2_adreno200.so \
-    device/lge/thunderg/files/lib/egl/libq3dtools_adreno200.so:system/lib/egl/libq3dtools_adreno200.so
+    device/lge/thunderg/files/lib/egl/libq3dtools_adreno200.so:system/lib/egl/libq3dtools_adreno200.so \
+    device/lge/thunderg/files/lib/libgsl.so:system/lib/libgsl.so \
 
+# Camera
 PRODUCT_COPY_FILES += \
-    device/lge/thunderg/files/lib/liboemcamera.so:system/lib/liboemcamera.so
+    device/lge/thunderg/files/lib/liboemcamera.so:system/lib/liboemcamera.so \
+    device/lge/thunderg/files/lib/libmmipl.so:system/lib/libmmipl.so \
+    device/lge/thunderg/files/lib/libmmjpeg.so:system/lib/libmmjpeg.so \
 
 # Wifi
 PRODUCT_COPY_FILES += \
@@ -78,21 +73,23 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/etc/vold.fstab:system/etc/vold.fstab
 
-# Audio (need to test a2dp)
+# Audio (
 PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/etc/AudioFilter.csv:system/etc/AudioFilter.csv \
     device/lge/thunderg/files/lib/liba2dp.so:system/lib/liba2dp.so \
-    device/lge/thunderg/files/lib/libaudioeq.so:system/lib/libaudioeq.so
+    device/lge/thunderg/files/lib/libaudioeq.so:system/lib/libaudioeq.so \
 
+# Device permissions
 PRODUCT_COPY_FILES += \
     frameworks/base/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
-    frameworks/base/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
+    frameworks/base/data/etc/android.hardware.camera.autofocus.xml:system/etc/permissions/android.hardware.camera.autofocus.xml \
     frameworks/base/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
     frameworks/base/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
     frameworks/base/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
     frameworks/base/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
-    frameworks/base/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
-    frameworks/base/data/etc/android.hardware.touchscreen.multitouch.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.xml
+    frameworks/base/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
+    frameworks/base/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml \
+    frameworks/base/data/etc/android.hardware.touchscreen.multitouch.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.xml \
 
 # LGE services
 PRODUCT_COPY_FILES += \
@@ -105,11 +102,11 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PROPERTY_OVERRIDES += \
     rild.libpath=/system/lib/libril-qc-1.so \
-    rild.libargs="-d /dev/smd0" \
+    rild.libargs="-d\ /dev/smd0" \
     ro.lge.vibrator_amp=125 \
     ro.opengles.version=131072 \
     dalvik.vm.heapsize=32m \
-    ro.product.model="LG P500" \
+    ro.product.model="LG\ P500" \
     persist.cust.tel.eons=1 \
     dalvik.vm.dexopt-flags=m=y \
     dalvik.vm.execution-mode=int:jit
@@ -189,3 +186,13 @@ PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/etc/bluetooth/input.conf:system/etc/bluetooth/input.conf \
     device/lge/thunderg/files/etc/bluetooth/main.conf:system/etc/bluetooth/main.conf \
 
+$(call inherit-product, build/target/product/full_base.mk)
+
+#$(warning PRODUCT_PACKAGES: $(PRODUCT_PACKAGES))
+
+PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
+PRODUCT_NAME := full_thunderg
+PRODUCT_BRAND := LGE
+PRODUCT_DEVICE := thunderg
+PRODUCT_MODEL := LG-P500
+PRODUCT_MANUFACTURER := LGE
