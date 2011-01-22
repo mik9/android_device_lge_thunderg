@@ -395,6 +395,8 @@ status_t AudioHardware::setParameters(const String8& keyValuePairs)
             mTtyMode = TTY_OFF;
         }
         doRouting(NULL);
+    } else {
+        mTtyMode = TTY_OFF;
     }
 
     return NO_ERROR;
@@ -1119,7 +1121,6 @@ status_t AudioHardware::doAudioRouteOrMute(uint32_t device)
         }
     }
 #endif
-	mMicMute = 0;
     LOGV("doAudioRouteOrMute() device %x, mMode %d, mMicMute %d", device, mMode, mMicMute);
     return do_route_audio_rpc(device,
                               mMode != AudioSystem::MODE_IN_CALL, mMicMute, m7xsnddriverfd);
