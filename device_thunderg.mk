@@ -13,7 +13,9 @@ PRODUCT_PACKAGES += \
 	libmm-omxcore \
     libOmxCore \
     brcm_patchram_plus \
-    libaudio.thunderg
+    libaudio.thunderg \
+    copybit.thunderg \
+    gralloc.thunderg
 
 # Publish that we support the live wallpaper feature.
 PRODUCT_COPY_FILES += \
@@ -29,15 +31,16 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/init.thunderg.rc:root/init.thunderg.rc \
     device/lge/thunderg/files/initlogo.rle:root/initlogo.rle \
+    device/lge/thunderg/files/ueventd.thunderg.rc:root/ueventd.thunderg.rc \
 
 # Backlight
 PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/lib/hw/lights.thunderg.so:system/lib/hw/lights.thunderg.so \
 
 # 2D
-PRODUCT_COPY_FILES += \
-    device/lge/thunderg/files/lib/hw/gralloc.thunderg.so:system/lib/hw/gralloc.thunderg.so \
-    device/lge/thunderg/files/lib/hw/copybit.thunderg.so:system/lib/hw/copybit.thunderg.so \
+#PRODUCT_COPY_FILES += \
+#    device/lge/thunderg/files/lib/hw/gralloc.thunderg.so:system/lib/hw/gralloc.thunderg.so \
+#    device/lge/thunderg/files/lib/hw/copybit.thunderg.so:system/lib/hw/copybit.thunderg.so \
 
 # Sensors
 PRODUCT_COPY_FILES += \
