@@ -54,6 +54,8 @@ PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/lib/egl/libGLESv2_adreno200.so:system/lib/egl/libGLESv2_adreno200.so \
     device/lge/thunderg/files/lib/egl/libq3dtools_adreno200.so:system/lib/egl/libq3dtools_adreno200.so \
     device/lge/thunderg/files/lib/libgsl.so:system/lib/libgsl.so \
+    device/lge/thunderg/files/etc/firmware/yamato_pfp.fw:system/etc/firmware/yamato_pfp.fw \
+    device/lge/thunderg/files/etc/firmware/yamato_pm4.fw:system/etc/firmware/yamato_pm4.fw \
 
 # Camera
 PRODUCT_COPY_FILES += \
