@@ -105,16 +105,7 @@ PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/bin/wiperiface:system/bin/wiperiface \
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    rild.libpath=/system/lib/libril-qc-1.so \
-    rild.libargs="-d\ /dev/smd0" \
     ro.lge.vibrator_amp=125 \
-    ro.opengles.version=131072 \
-    dalvik.vm.heapsize=32m \
-    ro.product.model="LG\ P500" \
-    persist.cust.tel.eons=1 \
-    dalvik.vm.dexopt-flags=m=y \
-    dalvik.vm.execution-mode=int:jit
-
 
 # RIL
 PRODUCT_COPY_FILES += \
