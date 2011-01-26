@@ -14,7 +14,6 @@ persist.rild.nitz_short_ons_1=
 persist.rild.nitz_short_ons_2=
 persist.rild.nitz_short_ons_3=
 DEVICE_PROVISIONED=1
-debug.sf.hw=0
 # Touch Key, hopemini@lge.com, 2009-12-10
 # SEARCH, BACK, HOME, MENU, CALL, END
 #ro.lge.touchkey=BACK|SEARCH
