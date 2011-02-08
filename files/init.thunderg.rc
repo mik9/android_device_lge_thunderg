@@ -19,6 +19,11 @@ on boot
 	chown bluetooth bluetooth /dev/ttyHS0
 	chmod 0660 /dev/ttyHS0
 	chmod 0666 /dev/msm_snd
+	
+#	chmod 0666 /dev/msm_camera/config0
+#	chmod 0666 /dev/msm_camera/control0
+#	chmod 0666 /dev/msm_camera/frame0
+	
 ## VIBRATOR
     chmod 0666 /sys/class/timed_output/vibrator/amp
 ## SENSOR
@@ -27,7 +32,7 @@ on boot
 	chown system system /dev/ami304daemon
 	chmod 0666 dev/ami304daemon
 	chown system system /dev/ami304hal
-	chmod 0666 dev/ami304hal
+	chmod 0666 /dev/ami304hal
 	mkdir /data/amit 0770 ami304d ami304d
 	chown system system /dev/KR3DH
 	chmod 0666 /dev/KR3DH
@@ -37,6 +42,8 @@ on boot
 	chmod 0666 /sys/bus/i2c/drivers/proximity_gp2ap/4-0044/enable
 ## USB
 	chmod 0666 /sys/devices/platform/msm_hsusb_periphera/composition
+	
+	chmod 0666 /dev/oncrpc/3000008c:00050000
 
 	chown root root /dev/hw3d
 	chmod 0666 /dev/hw3d
@@ -92,139 +99,20 @@ on boot
 	chown system radio /dev/rtc1
 	chmod 0660 radio /dev/rtc1
 
-# LGE_CHANGE_S, [jisung.yang@lge.com] 2010-04-24, <make wifi directory>  
 # WIFI
 	mkdir /data/misc/wifi/sockets 0770 wifi wifi
-    setprop wifi.supplicant_scan_interval 20
-    setprop wifi.interface wlan0
 
 #DHCP
     mkdir /data/misc/dhcp 0777 system system
-# LGE_CHANGE_E, [jisung.yang@lge.com] 2010-04-24, <make wifi directory> 
-
-## ERS
-    mkdir /data/data/com.lge.ers
-    mkdir /data/data/com.lge.ers/android
-    mkdir /data/data/com.lge.ers/kernel
-    mkdir /data/data/com.lge.ers/arm9
-    chmod 0777 /data/data/com.lge.ers/android
-    chmod 0777 /data/data/com.lge.ers/kernel
-    chmod 0777 /data/data/com.lge.ers/arm9
-    
-## FOTA, for FOTA Package Downloading.
-    mkdir /cache/fota
-    chmod 0777 /cache/fota
-
-# Collect ramconsole data
-	copy /proc/last_kmsg /data/dontpanic/last_kmsg
-	chown root log /data/dontpanic/last_kmsg
-	chmod 0640 /data/dontpanic/last_kmsg
-
-# LGE_CHANGE_S suntae.joo@lge.com 2010-07-14
-# create logging directory
-	mkdir /data/logger 0771 system system
-# LGE_CHANGE_E suntae.joo@lge.com 2010-07-14
-## Hidden reset for the kernel interface
-   chmod 0666 /sys/module/lge_handle_panic/parameters/hidden_reset_enable
-on property:init.svc.hcid=running
-	write /sys/devices/virtual/bluetooth/hci0/idle_timeout 7000
 
 # DBCHECK
-        mkdir /data/dbcheck 0777 system system
-
-# LG_FW_AUDIO_BROADCOM_BT , not used below lines
-#service hci_qcomm_init /system/bin/log -t qcom-bluetooth -p i "hci_qcomm_init service requested"
-#    user bluetooth
-#    group bluetooth net_bt_admin
-#    disabled
-#    oneshot
-
-# +++ BRCM +++
-# Make sure we startup btld before bluetoothd
-# Set target address to emulator host loopback IF
-# Limit baudrate to 460800 to ensure reliable uart operation
-#service btld /system/bin/logwrapper /system/bin/btld -pf /system/bin/BCM4325D1_004.002.004.0218.0248.hcd -hb 4000000 -lpm 1
-#    user root			
-#    group bluetooth net_bt_admin			
-#    disabled			
-#    oneshot			
-
-## mik_os bluetooth test
-service btld /system/bin/logwrapper /system/bin/btld -hb 3000000 -hp /dev/s3c_serial1 -lpm 1
-    user root
-    group bluetooth net_bt_admin
-    disabled
-    oneshot
-
-service hfag /system/bin/sdptool add --channel=10 HFAG
-    user bluetooth
-    group bluetooth net_bt_admin
-    disabled
-    oneshot
-
-service hsag /system/bin/sdptool add --channel=11 HSAG
-    user bluetooth
-    group bluetooth net_bt_admin
-    disabled
-    oneshot
-
-service opush /system/bin/sdptool add --channel=12 OPUSH
-    user bluetooth
-    group bluetooth net_bt_admin
-    disabled
-    oneshot
-
-service pbap /system/bin/sdptool add --channel=19 PBAP
-    user bluetooth
-    group bluetooth net_bt_admin
-    disabled
-    oneshot
+#        mkdir /data/dbcheck 0777 system system
 
 service hciattach /system/bin/brcm_patchram_plus -d --baudrate 3000000 --patchram /system/bin/BCM4325D1_004.002.004.0218.0248.hcd --enable_hci /dev/ttyHS0
     user bluetooth
     group bluetooth net_bt_admin
     disabled
     oneshot
-## mik_os bluetooth end
-				
-service bluetoothd /system/bin/bluetoothd -n /etc/blutooth/main.conf		
-    socket bluetooth stream 660 bluetooth bluetooth			
-    socket dbus_bluetooth stream 660 bluetooth bluetooth			
-    # init.rc does not yet support applying capabilities, so run as root and			
-    # let bluetoothd drop uid to bluetooth with the right linux capabilities			
-    group bluetooth net_bt_admin misc			
-    disabled			
-
-#service hciattach /system/bin/sh /system/etc/init.qcom.bt.sh
-#    user bluetooth
-#    group qcom_oncrpc bluetooth net_bt_admin
-#    disabled
-#    oneshot
-
-#service hcid /system/bin/hcid -s -n -f /etc/bluez/hcid.conf
-#    socket bluetooth stream 660 bluetooth bluetooth
-#    socket dbus_bluetooth stream 660 bluetooth bluetooth
-#    # init.rc does not yet support applying capabilities, so run as root and
-#    # let hcid drop uid to bluetooth with the right linux capabilities
-#    group bluetooth net_bt_admin misc
-#    disabled
-
-#service hfag /system/bin/sdptool add --channel=10 HFAG
-#    user bluetooth
-#    group bluetooth net_bt_admin
-#    disabled
-#    oneshot
-
-#service hsag /system/bin/sdptool add --channel=11 HSAG
-#    user bluetooth
-#    group bluetooth net_bt_admin
-#    disabled
-#    oneshot
-# --- BRCM ---
-
-service cnd /system/bin/cnd
-    socket cnd stream 660 root radio
-    socket cne stream 660 root radio
 
 service qmuxd /system/bin/qmuxd 
 
@@ -235,30 +123,21 @@ service ami304d /system/bin/ami304d
 service port-bridge /system/bin/port-bridge /dev/smd0 /dev/ttyGS0
 	disabled
 
-on property:init.svc.bootlogo=stopped
 on property:init.svc.bootanim=stopped
 	start port-bridge
 
-
-# LGE_CHANGE_S, [jisung.yang@lge.com], 2010-04-24,<register WLAN services>
 service wpa_supplicant /system/bin/wpa_supplicant -Dwext -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf #-dd
 	socket wpa_wlan0 dgram 660 wifi wifi
 	group system wifi inet
 	disabled
 	oneshot
-#	console
 
-#service dhcpcd /system/bin/dhcpcd -B wlan0
-service dhcpcd /system/bin/dhcpcd -BKLA wlan0 # disable ARP operation
+service dhcpcd /system/bin/dhcpcd -B wlan0
 	disabled
 	oneshot
 
 on property:init.svc.wpa_supplicant=stopped
 stop dhcpcd
-# LGE_CHANGE_E, [jisung.yang@lge.com], 2010-04-24,<register WLAN services>
-
-#service dhcp-service /system/bin/netcfg eth0 dhcp
-#    oneshot
 
 service qcom-post-boot /system/bin/sh /init.qcom.post_boot.sh
 	user root
@@ -268,28 +147,18 @@ service qcom-post-boot /system/bin/sh /init.qcom.post_boot.sh
 on property:dev.bootcomplete=1
     start qcom-post-boot
 
-#on property:dev.bootcomplete=1
-#    stop dhcp-service
-#    start dhcp-service
-
-
-service rmt_storage /system/bin/rmt_storage /dev/block/mmcblk0p10 /dev/block/mmcblk0p11
-    user root
-    disabled
-
+## What is this?
 service netmgrd /system/bin/netmgrd -E
     disabled
 
 on property:ro.use_data_netmgrd=true
     start netmgrd
 
+## What is this?
 service wiperiface /system/bin/wiperiface
     user location
     group qcom_oncrpc
     oneshot
-
-#service ckpd /system/bin/CKPD-daemon
-#    onrestart /system/bin/log -t RIL-CKPD -p w "CKPD daemon restarted"
 
 # bugreport is triggered by the KEY_VOLUME_DOWN and KEY_MENU keycodes
 service bugreport /system/bin/logwrapper /system/bin/dumpstate -d -v -o /sdcard/bugreports/bugreport
@@ -301,56 +170,3 @@ service bugreport /system/bin/logwrapper /system/bin/dumpstate -d -v -o /sdcard/
 # LGE_CHANGE_S [ynj.kim,2010-06-23 ]
 service tsdown /system/bin/tsdown
 	oneshot
-
-# LGE_CHANGE_S suntae.joo@lge.com 2010-07-14
-# logging service
-service logcat-main /system/bin/logcat -v time -b main -f /data/logger/main.log -n 4 -r 4096
-	disabled
-	oneshot
-
-on property:persist.service.main.enable=1
-	start logcat-main
-
-on property:persist.service.main.enable=0
-	stop logcat-main
-
-service logcat-system /system/bin/logcat -v time -b system -f /data/logger/system.log -n 4 -r 4096
-	disabled
-	oneshot
-
-on property:persist.service.system.enable=1
-	start logcat-system
-
-on property:persist.service.system.enable=0
-	stop logcat-system
-
-service logcat-radio /system/bin/logcat -v time -b radio -f /data/logger/radio.log -n 4 -r 4096
-	disabled
-	oneshot
-
-on property:persist.service.radio.enable=1
-	start logcat-radio
-
-on property:persist.service.radio.enable=0
-	stop logcat-radio
-
-service logcat-events /system/bin/logcat -v time -b events -f /data/logger/events.log -n 4 -r 4096
-	disabled
-	oneshot
-
-on property:persist.service.events.enable=1
-	start logcat-events
-
-on property:persist.service.events.enable=0
-	stop logcat-events
-# LGE_CHANGE_E suntae.joo@lge.com 2010-07-14
-
-# LGE_CHANGE_S eric.bae@lge.com 2010-09-07
-service hidden-reset /system/bin/sh /init.lge.hidden_reset.sh
-	user root
-	disabled
-	oneshot
-
-on property:dev.bootdone=1
-    start hidden-reset
-# LGE_CHANGE_E eric.bae@lge.com 2010-09-07

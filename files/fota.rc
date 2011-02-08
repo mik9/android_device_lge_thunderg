@@ -1,0 +1,52 @@
+
+on nand
+
+    mkdir /system
+    mkdir /data 0771 system system
+    mkdir /cache 0777 system system
+    # Mount /system rw first to give the filesystem a chance to save a checkpoint
+    mount yaffs2 mtd@system /system
+    mount yaffs2 mtd@system /system rw remount
+    mount yaffs2 mtd@userdata /data nosuid nodev
+    mount yaffs2 mtd@cache /cache nosuid nodev
+
+on init
+
+export PATH /sbin
+
+# setup the global environment
+    export PATH /sbin:/data/data/com.lge.omadmclient/files/:/cache/fota/
+    export ANDROID_ROOT /system
+    export ANDROID_DATA /data
+    export EXTERNAL_STORAGE /sdcard
+
+    symlink /system/etc /etc
+
+    mount /tmp /tmp tmpfs
+    mount rootfs rootfs / rw remount
+
+    chmod 0777	/data/data
+    chmod 0777	/data/data/com.lge.omadmclient
+    chmod 0777	/data/data/com.lge.omadmclient/files
+    chmod 0777	/cache/fota/dlpkgfile
+    chmod 0777  /dev/fb0
+
+on boot
+
+    ifup lo
+    hostname localhost
+    domainname localdomain
+
+    class_start default
+
+
+#service recovery /sbin/recovery
+
+service adbd /sbin/adbd recovery
+
+on property:persist.service.adb.enable=1
+    start adbd
+
+on property:persist.service.adb.enable=0
+    stop adbd
+
