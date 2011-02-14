@@ -19,9 +19,17 @@
 #ifndef __LINUX_MSM_CAMERA_H
 #define __LINUX_MSM_CAMERA_H
 
+#ifdef MSM_CAMERA_BIONIC
+#include <sys/types.h>
+#endif
 #include <linux/types.h>
 #include <asm/sizes.h>
 #include <linux/ioctl.h>
+#ifdef MSM_CAMERA_GCC
+#include <time.h>
+#else
+#include <linux/time.h>
+#endif
 
 #define MSM_CAM_IOCTL_MAGIC 'm'
 
@@ -106,28 +114,6 @@
 #define MSM_CAM_IOCTL_AF_CTRL_DONE \
 	_IOW(MSM_CAM_IOCTL_MAGIC, 26, struct msm_ctrl_cmt_t *)
 
-#if defined(CONFIG_MT9T111) || defined(CONFIG_ISX005)
-#define MSM_CAMERA_AF_NORMAL	0
-#define MSM_CAMERA_AF_MACRO		1
-#define MSM_CAMERA_AF_AUTO		2
-	
-struct msm_af_cfg_cmd {
-	int cmd_type;
-	int mode;
-};
-	
-#define MSM_CAM_IOCTL_YUV_AF_CTRL_PARAM_INIT	_IOR(MSM_CAM_IOCTL_MAGIC, 27, struct msm_ctrl_cmt_t *)
-#define MSM_CAM_IOCTL_YUV_AF_CTRL_CONFIG_START	_IOW(MSM_CAM_IOCTL_MAGIC, 28, struct msm_ctrl_cmt_t *)
-#define MSM_CAM_IOCTL_YUV_AF_CTRL_GET_FRAME		_IOW(MSM_CAM_IOCTL_MAGIC, 29, struct msm_ctrl_cmt_t *)
-#define MSM_CAM_IOCTL_YUV_AF_CTRL_GET_STATUS	_IOW(MSM_CAM_IOCTL_MAGIC, 30, struct msm_ctrl_cmt_t *)
-#endif
-
-#if defined (CONFIG_MT9T111)
-#define MSM_CAM_IOCTL_ISO_CTRL_SET				_IOW(MSM_CAM_IOCTL_MAGIC, 31, struct msm_ctrl_cmt_t *)
-#define MSM_CAM_IOCTL_SCNEMODE_CTRL_SET			_IOW(MSM_CAM_IOCTL_MAGIC, 32, struct msm_ctrl_cmt_t *)
-#define MSM_CAM_IOCTL_SENSOR_ALWAYS_ON_TEST		_IOW(MSM_CAM_IOCTL_MAGIC, 33, uint32_t *)
-#endif
-
 #define MAX_SENSOR_NUM  3
 #define MAX_SENSOR_NAME 32
 
@@ -160,19 +146,9 @@ struct msm_ctrl_cmd {
 	int resp_fd; /* FIXME: to be used by the kernel, pass-through for now */
 };
 
-#if defined (CONFIG_MT9T111) || defined (CONFIG_ISX005)
-#define YUV_AF_MODE_LOCKED			1
-#define YUV_AF_MODE_UNLOCKED		2
-#define YUV_AF_MODE_LOCKED_FAILED	0xff
-#define YUV_AF_MODE_INIT			4
-#endif
-
 struct msm_vfe_evt_msg {
 	unsigned short type;	/* 1 == event (RPC), 0 == message (adsp) */
 	unsigned short msg_id;
-#if defined(CONFIG_MT9T111) || defined (CONFIG_ISX005)
-	int af_mode_locked;
-#endif
 	unsigned int len;	/* size in, number of bytes out */
 	void *data;
 };
@@ -340,6 +316,7 @@ struct outputCfg {
 #define OUTPUT_TYPE_V		4
 
 struct msm_frame {
+	struct timespec ts;
 	int path;
 	unsigned long buffer;
 	uint32_t y_off;
@@ -414,22 +391,23 @@ struct msm_snapshot_pp_status {
 #define CFG_GET_AF_MAX_STEPS		26
 #define CFG_GET_PICT_MAX_EXP_LC		27
 #define CFG_SEND_WB_INFO    28
-#if 0
-#if defined (CONFIG_MT9T111)
-#define CFG_SET_AF_PARAM_INIT	128
-#define CFG_SET_AF_START		129
-#define CFG_GET_AF_STATUS		130
-#define CFG_SET_ISO				131
-#define CFG_SET_SCENEMODE		132
-#define CFG_MAX					133
-#elif defined (CONFIG_ISX005)
-#define CFG_SET_AF_PARAM_INIT	128
-#define CFG_SET_AF_START		129
-#define CFG_GET_AF_STATUS		130
-#define CFG_MAX					131
-#else	/* origin */
-#define CFG_MAX					29
+#define CFG_MAX 			29
+
+/* LGE_CHANGE_S [junyeong.han@lge.com] Add CFG values for auto focus */
+/* 2010-05-02: Add auto-focus values */
+/* 2010-05-05: Add setting iso values */
+/* 2010-05-14: Add setting scene values */
+#if defined (CONFIG_ISX005)
+#define CFG_START_AF_FOCUS	101
+#define CFG_CHECK_AF_DONE	102
+#define CFG_CHECK_AF_CANCEL	103
+#define CFG_AF_LOCKED		104
+#define CFG_AF_UNLOCKED		105
+
+#define CFG_SET_ISO			201
+#define CFG_SET_SCENE		202
 #endif
+/* LGE_CHANGE_E [junyeong.han@lge.com] */
 
 #define MOVE_NEAR	0
 #define MOVE_FAR	1
@@ -451,123 +429,18 @@ struct msm_snapshot_pp_status {
 #define CAMERA_EFFECT_WHITEBOARD	6
 #define CAMERA_EFFECT_BLACKBOARD	7
 #define CAMERA_EFFECT_AQUA		8
+
+/* LGE_CHANGE_S [junyeong.han@lge.com] Add CAMERA_EFFECT values */
+/* 2010-05-13: Add CAMERA_EFFECT values */
+#if defined (CONFIG_ISX005)
+#define CAMERA_EFFECT_NEGATIVE_SEPIA	9
+#define CAMERA_EFFECT_BLUE				10
+#define CAMERA_EFFECT_PASTEL			11
+#define CAMERA_EFFECT_MAX				12
+#else	/* 5330 origin */
 #define CAMERA_EFFECT_MAX		9
-#else
-#define CFG_SET_ISO 28
-#define CFG_SET_SCENE_MODE 29
-#define CFG_SET_EXPOSURE_VALUE 30
-#define CFG_MAX					31
-
-
-#define CFG_SET_IMG_QUALITY 32
-#define CFG_SET_FLICKER 33
-#define CFG_SET_RECORDING_MODE 34
-
-#define CFG_SET_CANCEL_FOCUS 35
-
-#define CFG_SET_PARM_AF_MODE 36
-
-#define CFG_JPEG_QUALITY 37
-
-#define CFG_SET_ZOOM_VIDEO 38
 #endif
-
-#define MOVE_NEAR	0
-#define MOVE_FAR	1
-
-#define SENSOR_PREVIEW_MODE		0
-#define SENSOR_SNAPSHOT_MODE		1
-#define SENSOR_RAW_SNAPSHOT_MODE	2
-
-/*
-#define SENSOR_QTR_SIZE			0
-#define SENSOR_FULL_SIZE		1
-#define SENSOR_INVALID_SIZE		2
-
-#define CAMERA_EFFECT_OFF		0
-#define CAMERA_EFFECT_MONO		1
-#define CAMERA_EFFECT_NEGATIVE		2
-#define CAMERA_EFFECT_SOLARIZE		3
-#define CAMERA_EFFECT_SEPIA		4
-#define CAMERA_EFFECT_POSTERIZE		5
-#define CAMERA_EFFECT_WHITEBOARD	6
-#define CAMERA_EFFECT_BLACKBOARD	7
-#define CAMERA_EFFECT_AQUA		8
-#define CAMERA_EFFECT_MAX		9
-#define	 CAMERA_EFFECT_PASTEL 10
-#define	 CAMERA_EFFECT_NEGATIVE_SEPIA 11
-#define	 CAMERA_EFFECT_BLUE 12
-*/
-#define CAMERA_EFFECT_OFF 0
-#define CAMERA_EFFECT_MONO 1
-#define CAMERA_EFFECT_SEPIA 2
-#define CAMERA_EFFECT_NEGATIVE 3
-#define CAMERA_EFFECT_NEGATIVE_SEPIA 4
-#define CAMERA_EFFECT_BLUE 5
-#define CAMERA_EFFECT_SOLARIZE 6
-#define CAMERA_EFFECT_PASTEL 7
-#define CAMERA_EFFECT_POSTERIZE 8
-#define CAMERA_EFFECT_WHITEBOARD 9
-#define CAMERA_EFFECT_BLACKBOARD 10
-#define CAMERA_EFFECT_AQUA 11
-#define CAMERA_EFFECT_MAX 12
-
-#if defined (CONFIG_ISX005) || defined (CONFIG_ISX006)
-#define	 CAMERA_WB_MIN 0 
-#define	 CAMERA_WB_AUTO 1
-#define	 CAMERA_WB_INCANDESCENT 2
-#define	 CAMERA_WB_SUNNY 3
-#define	 CAMERA_WB_FLUORESCENT 4 
-#define	 CAMERA_WB_CLOUDY 5
-#define	 CAMERA_WB_CUSTOM 6
-#define	 CAMERA_WB_DAYLIGHT 7
-#define	 CAMERA_WB_CLOUDY_DAYLIGHT 8 
-#define	 CAMERA_WB_TWILIGHT 9
-#define	 CAMERA_WB_SHADE 10
-#define	 CAMERA_WB_MAX 11
-
-// change to match to QHAL side (bionic\...\msm_camera.h)
-/* 
-#define	CAMERA_ISO_AUTO 0 
-#define	CAMERA_ISO_100 2
-#define	CAMERA_ISO_200 3
-#define	CAMERA_ISO_400 4
-#define	CAMERA_ISO_800 5
-#define	CAMERA_ISO_DEBLUR 1
-#define	CAMERA_ISO_MAX 6
-*/
-#define	CAMERA_ISO_AUTO 0 
-#define	CAMERA_ISO_100 1 
-#define	CAMERA_ISO_200 2
-#define	CAMERA_ISO_400 3
-#define	CAMERA_ISO_800 4
-#define	CAMERA_ISO_DEBLUR 5
-#define	CAMERA_ISO_MAX 6
-
-#define	CAMERA_SCENE_NORMAL 0
-#define	CAMERA_SCENE_PORTRAIT 1
-#define	CAMERA_SCENE_LANDSCAPE 2
-#define	CAMERA_SCENE_SPORT 3
-#define	CAMERA_SCENE_SUNSET 4
-#define	CAMERA_SCENE_NIGHT 5
-#define	CAMERA_SCENE_BACKLIGHT 6
-#define	CAMERA_SCENE_NIGHT_PORTRAIT 7
-#define	CAMERA_SCENE_BEACH 8
-#define	CAMERA_SCENE_PARTY 9
-#define	CAMERA_SCENE_MAX 10
-
-#define	SENSOR_QTR_SIZE 0
-#define	SENSOR_FULL_SIZE 1
-#define	SENSOR_QVGA_SIZE 2
-#define	SENSOR_VGA_SIZE 3
-#define	SENSOR_QUADVGA_SIZE 4
-#define	SENSOR_UXGA_SIZE 5
-#define	SENSOR_QXGA_SIZE 6
-#define	SENSOR_INVALID_SIZE 7
-
-#define AUTO_FOCUS  0
-#define MACRO_FOCUS 1
-#endif
+/* LGE_CHANGE_E [junyeong.han@lge.com] */
 
 struct sensor_pict_fps {
 	uint16_t prevfps;
@@ -582,7 +455,6 @@ struct exp_gain_cfg {
 struct focus_cfg {
 	int32_t steps;
 	int dir;
-	int mode;
 };
 
 struct fps_cfg {
@@ -599,18 +471,10 @@ struct sensor_cfg_data {
 	int cfgtype;
 	int mode;
 	int rs;
-	int width;
-	int height;
 	uint8_t max_steps;
 
 	union {
 		int8_t effect;
-#if defined (CONFIG_MT9T111)
-		int8_t wb;
-		int8_t brightness;
-		int8_t iso;
-		int8_t scenemode;
-#endif
 		uint8_t lens_shading;
 		uint16_t prevl_pf;
 		uint16_t prevp_pl;
@@ -623,38 +487,28 @@ struct sensor_cfg_data {
 		struct focus_cfg focus;
 		struct fps_cfg fps;
 		struct wb_info_cfg wb_info;
-    int8_t wb;
-    int8_t iso;
-    int8_t scene_mode;
-    int8_t ev;
-
-    int8_t zoom; 
 	} cfg;
 };
-
-#if defined (CONFIG_MT9T111)
-// 2010.01.04 cis implementation whitebalance
+// LGE ejoon.kim@lge.com mode add
 #define CAMERA_YUV_WB_AUTO						1
 #define CAMERA_YUV_WB_INCANDESCENT			2
 #define CAMERA_YUV_WB_DAYLIGHT				3
 #define CAMERA_YUV_WB_FLUORESCENT			4
 #define CAMERA_YUV_WB_CLOUDY_DAYLIGHT		5
 
-//LG_FW : 2010.01.08 cis - use to camera brightness, iso
 #define CAMERA_YUV_ISO_AUTO		1
 #define CAMERA_YUV_ISO_800			2
 #define CAMERA_YUV_ISO_400			3
 #define CAMERA_YUV_ISO_200			4
 #define CAMERA_YUV_ISO_100			5
 
-//LG_FW : 2010.01.12 cis - use to camera scenemode
 #define CAMERA_SCENEMODE_AUTO 				1
 #define CAMERA_SCENEMODES_PORTRAIT 			2
 #define CAMERA_SCENEMODES_LANDSCAPE 		3
 #define CAMERA_SCENEMODES_SPORTS 			4
 #define CAMERA_SCENEMODES_NIGHT 				5
 #define CAMERA_SCENEMODES_SUNSET 			6
-#endif
+// LGE End
 
 #define GET_NAME			0
 #define GET_PREVIEW_LINE_PER_FRAME	1
