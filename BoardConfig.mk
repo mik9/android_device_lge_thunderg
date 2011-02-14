@@ -44,6 +44,7 @@ BOARD_WLAN_DEVICE := wlan0
 WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/wireless.ko"
 WIFI_DRIVER_MODULE_ARG := "firmware_path=/system/etc/wl/rtecdc.bin nvram_path=/system/etc/wl/nvram.txt"
 WIFI_DRIVER_MODULE_NAME := wireless
+## Tethering is not working now
 #WIFI_DRIVER_FW_STA_PATH := "/system/etc/wl/rtecdc.bin"
 #WIFI_DRIVER_FW_AP_PATH := "/system/etc/wl/rtecdc-apsta.bin"
 
@@ -73,4 +74,8 @@ BOARD_FLASH_BLOCK_SIZE := 131072
 #BOARD_HAS_NO_SELECT_BUTTON := true
 WITH_DEXPREOPT := true
 
+#JS_ENGINE := v8
+
 TARGET_PROVIDES_LIBAUDIO := true 
+#TARGET_PROVIDES_LIBRIL := true
+TARGET_HIDES_QCRIL_FROM_LOGCAT := true
