@@ -205,11 +205,11 @@ PRODUCT_COPY_FILES += \
 # Bluetooth
 PRODUCT_COPY_FILES += \
     vendor/lge/thunderg/proprietary/bin/BCM4325D1_004.002.004.0218.0248.hcd:system/bin/BCM4325D1_004.002.004.0218.0248.hcd \
-    vendor/lge/thunderg/proprietary/etc/bluetooth/audio.conf:system/etc/bluetooth/audio.conf \
-    vendor/lge/thunderg/proprietary/etc/bluetooth/auto_pairing.conf:system/etc/bluetooth/auto_pairing.conf \
-    vendor/lge/thunderg/proprietary/etc/bluetooth/blacklist.conf:system/etc/bluetooth/blacklist.conf \
-    vendor/lge/thunderg/proprietary/etc/bluetooth/input.conf:system/etc/bluetooth/input.conf \
-    vendor/lge/thunderg/proprietary/etc/bluetooth/main.conf:system/etc/bluetooth/main.conf \
+    device/lge/thunderg/files/etc/bluetooth/audio.conf:system/etc/bluetooth/audio.conf \
+    device/lge/thunderg/files/etc/bluetooth/auto_pairing.conf:system/etc/bluetooth/auto_pairing.conf \
+    device/lge/thunderg/files/etc/bluetooth/blacklist.conf:system/etc/bluetooth/blacklist.conf \
+    device/lge/thunderg/files/etc/bluetooth/input.conf:system/etc/bluetooth/input.conf \
+    device/lge/thunderg/files/etc/bluetooth/main.conf:system/etc/bluetooth/main.conf \
 
 $(call inherit-product, device/common/gps/gps_eu_supl.mk)
 
