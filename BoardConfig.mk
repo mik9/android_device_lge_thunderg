@@ -80,4 +80,4 @@ WITH_DEXPREOPT := true
 TARGET_PROVIDES_LIBAUDIO := true 
 #TARGET_PROVIDES_LIBRIL := true
 TARGET_HIDES_QCRIL_FROM_LOGCAT := true
-TARGET_USE_CUSTOM LUN_FILE_PATH := "/sys/devices/platform/msm_hsusb/gadget/lun"
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/msm_hsusb/gadget/lun"
