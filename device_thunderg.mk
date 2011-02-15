@@ -21,6 +21,10 @@ PRODUCT_PACKAGES += \
     gps.thunderg \
     lights.thunderg
 
+PRODUCT_PACKAGES += \
+    flash_image \
+    dump_image \
+    erase_image
 
 # GPS
 PRODUCT_COPY_FILES += \
