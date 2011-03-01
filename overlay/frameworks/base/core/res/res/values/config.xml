@@ -122,6 +122,6 @@
     <bool name="config_enableScreenOnAnimation">false</bool>
 
     <!-- Enable the screen-off animation -->
-    <bool name="config_enableScreenOffAnimation">false</bool>
+    <bool name="config_enableScreenOffAnimation">true</bool>
 
 </resources>
