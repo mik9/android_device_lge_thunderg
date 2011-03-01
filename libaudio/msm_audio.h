@@ -87,36 +87,42 @@
 #define	AUDIO_MAX_COMMON_IOCTL_NUM	100
 
 
-#define HANDSET_MIC			0x01
-#define HANDSET_SPKR			0x02
-#define HEADSET_MIC			0x03
-#define HEADSET_SPKR_MONO		0x04
-#define HEADSET_SPKR_STEREO		0x05
-#define SPKR_PHONE_MIC			0x06
-#define SPKR_PHONE_MONO			0x07
-#define SPKR_PHONE_STEREO		0x08
-#define BT_SCO_MIC			0x09
-#define BT_SCO_SPKR			0x0A
-#define BT_A2DP_SPKR			0x0B
-#define TTY_HEADSET_MIC			0x0C
-#define TTY_HEADSET_SPKR		0x0D
+#define HANDSET_MIC				0x01
+#define HANDSET_SPKR				0x02
+#define HEADSET_MIC				0x03
+#define HEADSET_SPKR_MONO			0x04
+#define HEADSET_SPKR_STEREO			0x05
+#define SPKR_PHONE_MIC				0x06
+#define SPKR_PHONE_MONO				0x07
+#define SPKR_PHONE_STEREO			0x08
+#define BT_SCO_MIC				0x09
+#define BT_SCO_SPKR				0x0A
+#define BT_A2DP_SPKR				0x0B
+#define TTY_HEADSET_MIC				0x0C
+#define TTY_HEADSET_SPKR			0x0D
+#define BT_A2DP_TX				0x10
+#define HEADSET_MONO_PLUS_SPKR_MONO_RX		0x11
+#define HEADSET_MONO_PLUS_SPKR_STEREO_RX	0x12
+#define HEADSET_STEREO_PLUS_SPKR_MONO_RX	0x13
+#define HEADSET_STEREO_PLUS_SPKR_STEREO_RX	0x14
+#define FM_TX_LOOPBACK                          0x17
+#define FM_TX                                   0x18
+#define LP_FM_SPKR_PHONE_STEREO_RX              0x19
+#define LP_FM_HEADSET_SPKR_STEREO_RX            0x1A
+#define I2S_RX					0x20
+#define SPKR_PHONE_MIC_BROADSIDE                0x2B
+#define HANDSET_MIC_BROADSIDE                   0x2C
+#define SPKR_PHONE_MIC_ENDFIRE                  0x2D
+#define HANDSET_MIC_ENDFIRE                     0x2E
+#define I2S_TX                                  0x30
+#define HDMI                                    0x40
 
 /* Default devices are not supported in a */
 /* device switching context. Only supported */
 /* for stream devices. */
 /* DO NOT USE */
-#define DEFAULT_TX			0x0E
-#define DEFAULT_RX			0x0F
-
-#define BT_A2DP_TX			0x10
-
-#define HEADSET_MONO_PLUS_SPKR_MONO_RX         0x11
-#define HEADSET_MONO_PLUS_SPKR_STEREO_RX       0x12
-#define HEADSET_STEREO_PLUS_SPKR_MONO_RX       0x13
-#define HEADSET_STEREO_PLUS_SPKR_STEREO_RX     0x14
-
-#define I2S_RX				0x20
-#define I2S_TX				0x21
+#define DEFAULT_TX		0x0E
+#define DEFAULT_RX		0x0F
 
 #define ADRC_ENABLE		0x0001
 #define EQ_ENABLE		0x0002
@@ -124,9 +130,9 @@
 #define QCONCERT_PLUS_ENABLE	0x0008
 #define MBADRC_ENABLE		0x0010
 
-#define AGC_ENABLE		0x0001
-#define NS_ENABLE		0x0002
-#define TX_IIR_ENABLE		0x0004
+#define AGC_ENABLE	0x0001
+#define NS_ENABLE	0x0002
+#define TX_IIR_ENABLE	0x0004
 
 #define VOC_REC_UPLINK		0x00
 #define VOC_REC_DOWNLINK	0x01

@@ -1035,7 +1035,7 @@ status_t AudioHardware::setVoiceVolume(float v)
     int vol = 0;
     if(mCurSndDevice == SND_DEVICE_SPEAKER)
     {
-        vol = lrint(v * 18.0);
+        vol = (lrint(v * 7.0) * 3);
     }
     else
     {
@@ -1060,12 +1060,12 @@ status_t AudioHardware::setMasterVolume(float v)
     Mutex::Autolock lock(mLock);
     int vol = ceil(v * 7.0);
     LOGI("Set master volume to %d.\n", vol);
-    set_volume_rpc(SND_DEVICE_HANDSET, SND_METHOD_VOICE, vol, m7xsnddriverfd);
-    set_volume_rpc(SND_DEVICE_SPEAKER, SND_METHOD_VOICE, vol, m7xsnddriverfd);
-    set_volume_rpc(SND_DEVICE_BT,      SND_METHOD_VOICE, vol, m7xsnddriverfd);
-    set_volume_rpc(SND_DEVICE_HEADSET, SND_METHOD_VOICE, vol, m7xsnddriverfd);
-    set_volume_rpc(SND_DEVICE_IN_S_SADC_OUT_HANDSET, SND_METHOD_VOICE, vol, m7xsnddriverfd);
-    set_volume_rpc(SND_DEVICE_IN_S_SADC_OUT_SPEAKER_PHONE, SND_METHOD_VOICE, vol, m7xsnddriverfd);
+    set_volume_rpc(SND_DEVICE_HANDSET, SND_METHOD_VOICE, vol * 3, m7xsnddriverfd);
+    set_volume_rpc(SND_DEVICE_SPEAKER, SND_METHOD_VOICE, vol * 3, m7xsnddriverfd);
+    set_volume_rpc(SND_DEVICE_BT,      SND_METHOD_VOICE, vol * 3, m7xsnddriverfd);
+    set_volume_rpc(SND_DEVICE_HEADSET, SND_METHOD_VOICE, vol * 3, m7xsnddriverfd);
+    set_volume_rpc(SND_DEVICE_IN_S_SADC_OUT_HANDSET, SND_METHOD_VOICE, vol * 3, m7xsnddriverfd);
+    set_volume_rpc(SND_DEVICE_IN_S_SADC_OUT_SPEAKER_PHONE, SND_METHOD_VOICE, vol * 3, m7xsnddriverfd);
     // We return an error code here to let the audioflinger do in-software
     // volume on top of the maximum volume that we set through the SND API.
     // return error - software mixer will handle it
