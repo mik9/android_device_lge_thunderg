@@ -143,6 +143,7 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.lge.vibrator_amp=125 \
+    ro.sf.lcd_density=160 \
 
 # Move dalvik-cache to /data
 PRODUCT_PROPERTY_OVERRIDES += \
