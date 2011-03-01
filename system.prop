@@ -21,7 +21,7 @@ DEVICE_PROVISIONED=1
 ro.lge.vibrator_amp=125
 ## wifi
 wifi.interface=wlan0
-wifi.supplicant_scan_interval=20
+wifi.supplicant_scan_interval=120
 ## opengles 2.0
 ro.opengles.version=131072
 #ro.ril.ecclist=112,911
@@ -81,3 +81,4 @@ persist.cust.tel.eons=1
 dalvik.vm.dexopt-flags=m=y
 dalvik.vm.heapsize=32m
 dalvik.vm.execution-mode=int:jit
+windowsmsg.max_events_per_sec=60
