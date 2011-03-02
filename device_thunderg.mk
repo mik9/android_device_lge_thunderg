@@ -26,16 +26,6 @@ PRODUCT_PACKAGES += \
     dump_image \
     erase_image
 
-# GPS
-PRODUCT_COPY_FILES += \
-    vendor/lge/thunderg/proprietary/etc/loc_parameter.ini:system/etc/loc_parameter.ini \
-    vendor/lge/thunderg/proprietary/lib/libloc_api.so:system/lib/libloc_api.so \
-    vendor/lge/thunderg/proprietary/lib/libgps.so:system/lib/libgps.so \
-    vendor/lge/thunderg/proprietary/lib/libloc.so:system/lib/libloc.so \
-    vendor/lge/thunderg/proprietary/lib/libloc.so:obj/lib/libloc.so \
-    vendor/lge/thunderg/proprietary/lib/libcommondefs.so:system/lib/libcommondefs.so \
-    vendor/lge/thunderg/proprietary/lib/libloc-rpc.so:system/lib/libloc-rpc.so \
-
 # Publish that we support the live wallpaper feature.
 PRODUCT_COPY_FILES += \
     packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:/system/etc/permissions/android.software.live_wallpaper.xml
