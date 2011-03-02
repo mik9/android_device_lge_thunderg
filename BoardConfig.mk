@@ -22,7 +22,7 @@ TARGET_USES_OLD_LIBSENSORS_HAL:=true
 TARGET_OTA_ASSERT_DEVICE := thunderg
 
 TARGET_NO_BOOTLOADER := true
-#TARGET_NO_RECOVERY := true
+TARGET_NO_RECOVERY := true
 TARGET_NO_RADIOIMAGE := true
 
 BOARD_USES_QCOM_HARDWARE := true
@@ -79,3 +79,4 @@ WITH_DEXPREOPT := true
 TARGET_PROVIDES_LIBAUDIO := true 
 #TARGET_PROVIDES_LIBRIL := true
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/msm_hsusb/gadget/lun"
+BOARD_UMS_LUNFILE := /sys/devices/platform/msm_hsusb/gadget/lun0/file
