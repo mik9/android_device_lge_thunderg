@@ -36,7 +36,7 @@
 
 #define LOG_SND_RPC 0  // Set to 1 to log sound RPC's
 
-#define COMBO_DEVICE_SUPPORTED 0 // Headset speaker combo device not supported on this target
+#define COMBO_DEVICE_SUPPORTED 1 // Headset speaker combo device not supported on this target
 #define DUALMIC_KEY "dualmic_enabled"
 #define TTY_MODE_KEY "tty_mode"
 
@@ -77,6 +77,7 @@ static uint32_t SND_DEVICE_SPEAKER=-1;
 static uint32_t SND_DEVICE_BT=-1;
 static uint32_t SND_DEVICE_BT_EC_OFF=-1;
 static uint32_t SND_DEVICE_HEADSET=-1;
+static uint32_t SND_DEVICE_HEADSET_STEREO=-1;
 static uint32_t SND_DEVICE_HEADSET_AND_SPEAKER=-1;
 static uint32_t SND_DEVICE_IN_S_SADC_OUT_HANDSET=-1;
 static uint32_t SND_DEVICE_IN_S_SADC_OUT_SPEAKER_PHONE=-1;
@@ -116,6 +117,7 @@ AudioHardware::AudioHardware() :
                 CHECK_FOR(BT);
                 CHECK_FOR(BT_EC_OFF);
                 CHECK_FOR(HEADSET);
+                CHECK_FOR(HEADSET_STEREO);
                 CHECK_FOR(HEADSET_AND_SPEAKER);
                 CHECK_FOR(IN_S_SADC_OUT_HANDSET);
                 CHECK_FOR(IN_S_SADC_OUT_SPEAKER_PHONE);
@@ -865,10 +867,10 @@ static int msm72xx_enable_audpp(uint16_t enable_mask, uint32_t device)
             device_id = 1;
              LOGI("SET DEVICE - SND_DEVICE_HANDSET device_id=1 .");
     }
-    if(device == SND_DEVICE_HEADSET)
+    if(device == SND_DEVICE_HEADSET_STEREO)
     {
             device_id = 2;
-            LOGI("SET DEVICE - SND_DEVICE_HEADSET device_id=2 .");
+            LOGI("SET DEVICE - SND_DEVICE_HEADSET_STEREO device_id=2 .");
     }
 
     fd = open(PCM_CTL_DEVICE, O_RDWR);
@@ -1032,10 +1034,14 @@ status_t AudioHardware::setVoiceVolume(float v)
         v = 1.0;
     }
 
-    int vol = lrint(v * 7.0);
+    int vol = 0;
     if (mCurSndDevice == SND_DEVICE_SPEAKER)
     {
-        vol *= 3;
+        vol = lrint(v * 21.0);
+    }
+    else
+    {
+        vol = lrint(v * 7.0);
     }
     LOGD("setVoiceVolume(%f)\n", v);
     LOGI("Setting in-call volume to %d (available range is 0 to 7)\n", vol);
@@ -1056,12 +1062,12 @@ status_t AudioHardware::setMasterVolume(float v)
     Mutex::Autolock lock(mLock);
     int vol = ceil(v * 7.0);
     LOGI("Set master volume to %d.\n", vol);
-    set_volume_rpc(SND_DEVICE_HANDSET, SND_METHOD_VOICE, vol * 3, m7xsnddriverfd);
-    set_volume_rpc(SND_DEVICE_SPEAKER, SND_METHOD_VOICE, vol * 3, m7xsnddriverfd);
-    set_volume_rpc(SND_DEVICE_BT,      SND_METHOD_VOICE, vol * 3, m7xsnddriverfd);
-    set_volume_rpc(SND_DEVICE_HEADSET, SND_METHOD_VOICE, vol * 3, m7xsnddriverfd);
-    set_volume_rpc(SND_DEVICE_IN_S_SADC_OUT_HANDSET, SND_METHOD_VOICE, vol * 3, m7xsnddriverfd);
-    set_volume_rpc(SND_DEVICE_IN_S_SADC_OUT_SPEAKER_PHONE, SND_METHOD_VOICE, vol * 3, m7xsnddriverfd);
+    set_volume_rpc(SND_DEVICE_HANDSET, SND_METHOD_VOICE, vol, m7xsnddriverfd);
+    set_volume_rpc(SND_DEVICE_SPEAKER, SND_METHOD_VOICE, vol, m7xsnddriverfd);
+    set_volume_rpc(SND_DEVICE_BT,      SND_METHOD_VOICE, vol, m7xsnddriverfd);
+    set_volume_rpc(SND_DEVICE_HEADSET_STEREO, SND_METHOD_VOICE, vol, m7xsnddriverfd);
+    set_volume_rpc(SND_DEVICE_IN_S_SADC_OUT_HANDSET, SND_METHOD_VOICE, vol, m7xsnddriverfd);
+    set_volume_rpc(SND_DEVICE_IN_S_SADC_OUT_SPEAKER_PHONE, SND_METHOD_VOICE, vol, m7xsnddriverfd);
     // We return an error code here to let the audioflinger do in-software
     // volume on top of the maximum volume that we set through the SND API.
     // return error - software mixer will handle it
@@ -1156,7 +1162,7 @@ status_t AudioHardware::doRouting(AudioStreamInMSM72xx *input)
                 sndDevice = SND_DEVICE_BT;
             } else if (inputDevice & AudioSystem::DEVICE_IN_WIRED_HEADSET) {
                     LOGI("Routing audio to Wired Headset\n");
-                    sndDevice = SND_DEVICE_HEADSET;
+                    sndDevice = SND_DEVICE_HEADSET_STEREO;
             } else {
                 if (outputDevices & AudioSystem::DEVICE_OUT_SPEAKER) {
                     LOGI("Routing audio to Speakerphone\n");
@@ -1216,7 +1222,7 @@ status_t AudioHardware::doRouting(AudioStreamInMSM72xx *input)
 #endif
         } else if (outputDevices & AudioSystem::DEVICE_OUT_WIRED_HEADSET) {
             LOGI("Routing audio to Wired Headset\n");
-            sndDevice = SND_DEVICE_HEADSET;
+            sndDevice = SND_DEVICE_HEADSET_STEREO;
             audProcess = (ADRC_ENABLE | EQ_ENABLE | RX_IIR_ENABLE );
         } else if (outputDevices & AudioSystem::DEVICE_OUT_SPEAKER) {
             LOGI("Routing audio to Speakerphone\n");
