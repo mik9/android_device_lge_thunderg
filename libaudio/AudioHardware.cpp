@@ -1255,59 +1255,46 @@ status_t AudioHardware::doRouting(AudioStreamInMSM72xx *input)
         }
     }
 
+    LOGE("doRouting CALLED, outputDevices = 0x%x",outputDevices);
     // if inputDevice == 0, restore output routing
     if (new_snd_device == -1) {
-        LOGE("0x%x\n",outputDevices);
         if (outputDevices & (outputDevices - 1)) {
             if ((outputDevices & AudioSystem::DEVICE_OUT_SPEAKER) == 0) {
                 LOGW("Hardware does not support requested route combination (%#X),"
                      " picking closest possible route...", outputDevices);
             }
         }
-        LOGE("I'm here o_O 1");
         if (outputDevices &
                    (AudioSystem::DEVICE_OUT_BLUETOOTH_SCO | AudioSystem::DEVICE_OUT_BLUETOOTH_SCO_HEADSET)) {
-            LOGE("I'm here o_O 3");
             LOGI("Routing audio to Bluetooth PCM\n");
             new_snd_device = SND_DEVICE_BT;
         } else if (outputDevices & AudioSystem::DEVICE_OUT_BLUETOOTH_SCO_CARKIT) {
-            LOGE("I'm here o_O 4");
-            LOGI("Routing audio to Bluetooth PCM\n");
+            LOGI("Routing audio to Bluetooth Carkit\n");
             new_snd_device = SND_DEVICE_CARKIT;
         } else if (outputDevices & AudioSystem::DEVICE_OUT_WIRED_HEADSET) {
-            LOGE("I'm here o_O 5");
             LOGI("Routing audio to Wired Headset\n");
             new_snd_device = SND_DEVICE_HEADSET_STEREO;
             new_post_proc_feature_mask = (ADRC_ENABLE | EQ_ENABLE | RX_IIR_ENABLE | MBADRC_ENABLE);
         } else if (outputDevices & AudioSystem::DEVICE_OUT_SPEAKER) {
-            LOGE("I'm here o_O 6");
             LOGI("Routing audio to Speakerphone\n");
             new_snd_device = SND_DEVICE_SPEAKER;
             new_post_proc_feature_mask = (ADRC_ENABLE | EQ_ENABLE | RX_IIR_ENABLE | MBADRC_ENABLE);
         } else {
-            LOGE("I'm here o_O 7");
             LOGI("Routing audio to Handset\n");
             new_snd_device = SND_DEVICE_HANDSET;
             new_post_proc_feature_mask = (ADRC_ENABLE | EQ_ENABLE | RX_IIR_ENABLE | MBADRC_ENABLE);
         }
-        LOGE("I'm here o_O 8");
     }
-    LOGE("I'm here o_O 9");
     if (mDualMicEnabled && mMode == AudioSystem::MODE_IN_CALL) {
-        LOGE("I'm here o_O 10");
         if (new_snd_device == SND_DEVICE_HANDSET) {
-            LOGE("I'm here o_O 11");
             LOGI("Routing audio to handset with DualMike enabled\n");
             new_snd_device = SND_DEVICE_IN_S_SADC_OUT_HANDSET;
         } else if (new_snd_device == SND_DEVICE_SPEAKER) {
-            LOGE("I'm here o_O 12");
             LOGI("Routing audio to speakerphone with DualMike enabled\n");
             new_snd_device = SND_DEVICE_IN_S_SADC_OUT_SPEAKER_PHONE;
         }
     }
-    LOGE("I'm here o_O 13");
     if (new_snd_device != -1 && new_snd_device != mCurSndDevice) {
-        LOGE("I'm here o_O 14");
         ret = doAudioRouteOrMute(new_snd_device);
 
        //disable post proc first for previous session
@@ -1323,7 +1310,6 @@ status_t AudioHardware::doRouting(AudioStreamInMSM72xx *input)
 
        mCurSndDevice = new_snd_device;
     }
-    LOGE("I'm here o_O 15");
     return ret;
 }
 
