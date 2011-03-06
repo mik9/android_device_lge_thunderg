@@ -87,6 +87,7 @@ static uint32_t SND_DEVICE_CURRENT=-1;
 static uint32_t SND_DEVICE_HANDSET=-1;
 static uint32_t SND_DEVICE_SPEAKER=-1;
 static uint32_t SND_DEVICE_BT=-1;
+static uint32_t SND_DEVICE_BT_VR=-1;
 static uint32_t SND_DEVICE_BT_EC_OFF=-1;
 static uint32_t SND_DEVICE_HEADSET_STEREO=-1;
 static uint32_t SND_DEVICE_HEADSET_AND_SPEAKER=-1;
@@ -126,6 +127,7 @@ AudioHardware::AudioHardware() :
                 CHECK_FOR(HANDSET);
                 CHECK_FOR(SPEAKER);
                 CHECK_FOR(BT);
+                CHECK_FOR(BT_VR);
                 CHECK_FOR(BT_EC_OFF);
                 CHECK_FOR(HEADSET_STEREO);
                 CHECK_FOR(HEADSET_AND_SPEAKER);
@@ -1143,6 +1145,7 @@ status_t AudioHardware::setMasterVolume(float v)
     set_volume_rpc(SND_DEVICE_HANDSET, SND_METHOD_VOICE, vol, m7xsnddriverfd);
     set_volume_rpc(SND_DEVICE_SPEAKER, SND_METHOD_VOICE, vol, m7xsnddriverfd);
     set_volume_rpc(SND_DEVICE_BT,      SND_METHOD_VOICE, vol, m7xsnddriverfd);
+    set_volume_rpc(SND_DEVICE_BT_VR,      SND_METHOD_VOICE, vol, m7xsnddriverfd);
     set_volume_rpc(SND_DEVICE_HEADSET_STEREO, SND_METHOD_VOICE, vol, m7xsnddriverfd);
     set_volume_rpc(SND_DEVICE_IN_S_SADC_OUT_HANDSET, SND_METHOD_VOICE, vol, m7xsnddriverfd);
     set_volume_rpc(SND_DEVICE_IN_S_SADC_OUT_SPEAKER_PHONE, SND_METHOD_VOICE, vol, m7xsnddriverfd);
