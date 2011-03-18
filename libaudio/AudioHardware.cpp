@@ -1314,19 +1314,25 @@ status_t AudioHardware::doRouting(AudioStreamInMSM72xx *input)
                 LOGI("Routing audio to Bluetooth PCM\n");
                 new_snd_device = SND_DEVICE_BT;
             } else if (inputDevice & AudioSystem::DEVICE_IN_WIRED_HEADSET) {
+#ifdef HAVE_FM_RADIO
 	        if (mFmRadioEnabled) {
                     LOGI("FM -> handset\n");
                     new_snd_device = SND_DEVICE_FM_HEADSET;
-                } else {
+                } else 
+#endif
+                {
                     LOGI("Routing audio to Wired Headset\n");
                     new_snd_device = SND_DEVICE_HEADSET_STEREO;
                 }
             } else {
                 if (outputDevices & AudioSystem::DEVICE_OUT_SPEAKER) {
+#ifdef HAVE_FM_RADIO
                     if (mFmRadioEnabled) {
                         LOGI("FM -> handset\n");
                         new_snd_device = SND_DEVICE_FM_SPEAKER;
-                    } else {
+                    } else 
+#endif
+                    {
                         LOGI("Routing audio to Speakerphone\n");
                         new_snd_device = SND_DEVICE_SPEAKER;
                     }
@@ -1356,20 +1362,26 @@ status_t AudioHardware::doRouting(AudioStreamInMSM72xx *input)
             LOGI("Routing audio to Bluetooth Carkit\n");
             new_snd_device = SND_DEVICE_CARKIT;
         } else if (outputDevices & AudioSystem::DEVICE_OUT_WIRED_HEADSET) {
+#ifdef HAVE_FM_RADIO
             if (mFmRadioEnabled) {
                 LOGI("FM -> handset\n");
                 new_snd_device = SND_DEVICE_FM_HEADSET;
-            } else {
+            } else 
+#endif
+            {
                  LOGI("Routing audio to Speakerphone\n");
                  new_snd_device = SND_DEVICE_HEADSET_STEREO;
             }
             LOGI("Routing audio to Wired Headset\n");
             new_post_proc_feature_mask = (ADRC_ENABLE | EQ_ENABLE | RX_IIR_ENABLE | MBADRC_ENABLE);
         } else if (outputDevices & AudioSystem::DEVICE_OUT_SPEAKER) {
+#ifdef HAVE_FM_RADIO
             if (mFmRadioEnabled) {
                 LOGI("FM -> handset\n");
                 new_snd_device = SND_DEVICE_FM_SPEAKER;
-            } else {
+            } else 
+#endif
+            {
                 LOGI("Routing audio to Speakerphone\n");
                 new_snd_device = SND_DEVICE_SPEAKER;
             }
