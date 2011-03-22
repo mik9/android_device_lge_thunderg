@@ -119,12 +119,6 @@ on property:init.svc.wpa_supplicant=running
     exec /system/xbin/iwconfig wlan0 power on
     exec /system/xbin/iwconfig wlan0 txpower 20
 
-on property:wimax.enable_wifi_pm=1
-    exec sleep 1
-    exec /system/xbin/iwconfig wlan0 power on
-    exec /system/xbin/iwconfig wlan0 txpower 20
-    setprop wimax.enable_wifi_pm 0
-
 service dhcpcd /system/bin/dhcpcd -B wlan0
 	disabled
 	oneshot
