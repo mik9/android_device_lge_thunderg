@@ -24,7 +24,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     flash_image \
     dump_image \
-    erase_image
+    erase_image \
+    e2fsck
 
 # Publish that we support the live wallpaper feature.
 PRODUCT_COPY_FILES += \
