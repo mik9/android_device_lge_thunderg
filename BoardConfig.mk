@@ -44,9 +44,8 @@ BOARD_WLAN_DEVICE := bcm4325
 WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/wireless.ko"
 WIFI_DRIVER_MODULE_ARG := "firmware_path=/system/etc/wl/rtecdc.bin nvram_path=/system/etc/wl/nvram.txt"
 WIFI_DRIVER_MODULE_NAME := wireless
-## Tethering is not working now
-#WIFI_DRIVER_FW_STA_PATH := "/system/etc/wl/rtecdc.bin"
-#WIFI_DRIVER_FW_AP_PATH := "/system/etc/wl/rtecdc-apsta.bin"
+WIFI_DRIVER_FW_STA_PATH := "/system/etc/wl/rtecdc.bin"
+WIFI_DRIVER_FW_AP_PATH := "/system/etc/wl/rtecdc-apsta.bin"
 
 BOARD_EGL_CFG := device/lge/thunderg/files/lib/egl/egl.cfg
 
