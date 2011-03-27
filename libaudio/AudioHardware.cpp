@@ -421,13 +421,11 @@ status_t AudioHardware::setParameters(const String8& keyValuePairs)
     }
 
 #ifdef HAVE_FM_RADIO
-    key = String8(AudioParameter::keyFmOn);
-    key = String8(AudioParameter::keyFmOff);
     int devices;
-    if (param.getInt(key, devices) == NO_ERROR) {
+    if (param.getInt(String8(AudioParameter::keyFmOn), devices) == NO_ERROR) {
        LOGE("devices = %d", devices);
        setFmOnOff(true);
-    } else if (param.getInt(key, devices) == NO_ERROR) {
+    } else if (param.getInt(String8(AudioParameter::keyFmOff), devices) == NO_ERROR) {
        LOGE("devices = %d", devices);
        setFmOnOff(false);
     }
