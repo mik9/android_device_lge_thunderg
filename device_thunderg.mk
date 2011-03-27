@@ -19,7 +19,8 @@ PRODUCT_PACKAGES += \
     libOmxCore \
     brcm_patchram_plus \
     gps.thunderg \
-    lights.thunderg
+    lights.thunderg \
+    copybit.thunderg
 
 PRODUCT_PACKAGES += \
     flash_image \
@@ -47,7 +48,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     vendor/lge/thunderg/proprietary/lib/hw/gralloc.default.so:system/lib/hw/gralloc.default.so \
     vendor/lge/thunderg/proprietary/lib/hw/gralloc.thunderg.so:system/lib/hw/gralloc.thunderg.so \
-    vendor/lge/thunderg/proprietary/lib/hw/copybit.thunderg.so:system/lib/hw/copybit.thunderg.so \
 
 # Sensors
 PRODUCT_COPY_FILES += \
