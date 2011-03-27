@@ -109,16 +109,16 @@ PRODUCT_COPY_FILES += \
     vendor/lge/thunderg/proprietary/bin/qmuxd:system/bin/qmuxd \
 
 # rmt_storage (What is this?)
-#PRODUCT_COPY_FILES += \
-#    vendor/lge/thunderg/proprietary/bin/rmt_storage:system/bin/rmt_storage \
+PRODUCT_COPY_FILES += \
+    vendor/lge/thunderg/proprietary/bin/rmt_storage:system/bin/rmt_storage \
 
 # port-bridge (What is this?)
 #PRODUCT_COPY_FILES += \
 #    vendor/lge/thunderg/proprietary/bin/port-bridge:system/bin/port-bridge \
 
 # wipeirface (What is this?)
-#PRODUCT_COPY_FILES += \
-#    vendor/lge/thunderg/proprietary/bin/wiperiface:system/bin/wiperiface \
+PRODUCT_COPY_FILES += \
+    vendor/lge/thunderg/proprietary/bin/wiperiface:system/bin/wiperiface \
 
 # Touchscreen firmware updater
 PRODUCT_COPY_FILES += \

@@ -136,3 +136,12 @@ service bugreport /system/bin/logwrapper /system/bin/dumpstate -d -v -o /sdcard/
 # LGE_CHANGE_S [ynj.kim,2010-06-23 ]
 service tsdown /system/bin/tsdown
 	oneshot
+
+service wiperiface /system/bin/wiperiface
+    user location
+    group qcom_oncrpc
+    oneshot
+
+service rmt_storage /system/bin/rmt_storage /dev/block/mmcblk0p10 /dev/block/mmcblk0p11
+    user root
+    disabled
