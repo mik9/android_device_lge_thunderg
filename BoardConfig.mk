@@ -80,6 +80,6 @@ TARGET_PROVIDES_LIBAUDIO := true
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/msm_hsusb/gadget/lun"
 BOARD_UMS_LUNFILE := /sys/devices/platform/msm_hsusb/gadget/lun0/file
 
-#BOARD_HAVE_FM_RADIO := true
-#BOARD_GLOBAL_CFLAGS += -DHAVE_FM_RADIO
-#BOARD_USE_BROADCOM_FM_VOLUME_HACK := true
+BOARD_HAVE_FM_RADIO := true
+BOARD_GLOBAL_CFLAGS += -DHAVE_FM_RADIO
+BOARD_USE_BROADCOM_FM_VOLUME_HACK := true
