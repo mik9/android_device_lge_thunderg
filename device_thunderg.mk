@@ -43,6 +43,7 @@ PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/init.thunderg.rc:root/init.thunderg.rc \
     device/lge/thunderg/files/initlogo.rle:root/initlogo.rle \
     device/lge/thunderg/files/ueventd.thunderg.rc:root/ueventd.thunderg.rc \
+    device/lge/thunderg/files/etc/init.local.rc:/system/etc/init.local.rc
 
 # 2D (using proprietary because of poor perfomance of open source libs)
 PRODUCT_COPY_FILES += \

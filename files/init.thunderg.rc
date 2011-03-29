@@ -115,10 +115,6 @@ service wpa_supplicant /system/bin/wpa_supplicant -Dwext -iwlan0 -c/data/misc/wi
 	disabled
 	oneshot
 
-on property:init.svc.wpa_supplicant=running
-    exec /system/xbin/iwconfig wlan0 power on
-    exec /system/xbin/iwconfig wlan0 txpower 20
-
 service dhcpcd /system/bin/dhcpcd -B wlan0
 	disabled
 	oneshot
