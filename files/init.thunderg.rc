@@ -138,6 +138,20 @@ service wiperiface /system/bin/wiperiface
     group qcom_oncrpc
     oneshot
 
-service rmt_storage /system/bin/rmt_storage /dev/block/mmcblk0p10 /dev/block/mmcblk0p11
-    user root
+#service rmt_storage /system/bin/rmt_storage /dev/block/mmcblk0p10 /dev/block/mmcblk0p11
+#    user root
+#    socket port_bridge stream 660 root radio
+#    disabled
+
+service port-bridge /system/bin/port-bridge /dev/smd0 /dev/ttyGS0
+    socket port_bridge stream 660 root radio
+	disabled
+
+on property:init.svc.bootanim=stopped
+	start port-bridge
+
+service netmgrd /system/bin/netmgrd -E
     disabled
+
+on property:ro.use_data_netmgrd=true
+    start netmgrd

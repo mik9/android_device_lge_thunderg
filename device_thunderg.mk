@@ -114,8 +114,8 @@ PRODUCT_COPY_FILES += \
     vendor/lge/thunderg/proprietary/bin/rmt_storage:system/bin/rmt_storage \
 
 # port-bridge (What is this?)
-#PRODUCT_COPY_FILES += \
-#    vendor/lge/thunderg/proprietary/bin/port-bridge:system/bin/port-bridge \
+PRODUCT_COPY_FILES += \
+    vendor/lge/thunderg/proprietary/bin/port-bridge:system/bin/port-bridge \
 
 # wipeirface (What is this?)
 PRODUCT_COPY_FILES += \
@@ -127,10 +127,10 @@ PRODUCT_COPY_FILES += \
     vendor/lge/thunderg/proprietary/etc/MELFAS_FIRM.bin:system/etc/MELFAS_FIRM.bin \
 
 # netmgr (What is this?)
-#PRODUCT_COPY_FILES += \
-#    vendor/lge/thunderg/proprietary/bin/netmgrd:system/bin/netmgrd \
-#    vendor/lge/thunderg/proprietary/lib/libdsutils.so:system/lib/libdsutils.so \
-#    vendor/lge/thunderg/proprietary/lib/libnetmgr.so:system/lib/libnetmgr.so
+PRODUCT_COPY_FILES += \
+    vendor/lge/thunderg/proprietary/bin/netmgrd:system/bin/netmgrd \
+    vendor/lge/thunderg/proprietary/lib/libdsutils.so:system/lib/libdsutils.so \
+    vendor/lge/thunderg/proprietary/lib/libnetmgr.so:system/lib/libnetmgr.so
 
 
 PRODUCT_PROPERTY_OVERRIDES += \
