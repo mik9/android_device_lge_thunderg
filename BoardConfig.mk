@@ -24,6 +24,7 @@ TARGET_OTA_ASSERT_DEVICE := thunderg
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RECOVERY := true
 TARGET_NO_RADIOIMAGE := true
+BOARD_CUSTOM_RECOVERY_KEYMAPPING:= ../../device/lge/thunderg/recovery/recovery_ui.c
 
 BOARD_USES_QCOM_HARDWARE := true
 BOARD_USES_QCOM_LIBS := true
