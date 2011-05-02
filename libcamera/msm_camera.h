@@ -19,6 +19,8 @@
 #ifndef __LINUX_MSM_CAMERA_H
 #define __LINUX_MSM_CAMERA_H
 
+#define CONFIG_ISX005
+
 #ifdef MSM_CAMERA_BIONIC
 #include <sys/types.h>
 #endif

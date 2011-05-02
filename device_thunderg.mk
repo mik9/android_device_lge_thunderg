@@ -3,6 +3,7 @@
 DEVICE_PACKAGE_OVERLAYS += device/lge/thunderg/overlay
 
 TARGET_PREBUILT_KERNEL := device/lge/thunderg/kernel_test
+#TARGET_PREBUILT_KERNEL := device/lge/thunderg/kernel_xionia
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
 	LOCAL_KERNEL := device/lge/thunderg/kernel
@@ -17,16 +18,19 @@ PRODUCT_PACKAGES += \
     librs_jni \
 	libmm-omxcore \
     libOmxCore \
-    brcm_patchram_plus \
     gps.thunderg \
     lights.thunderg \
-    copybit.thunderg
+    copybit.thunderg \
+    bdaddr_read
 
 PRODUCT_PACKAGES += \
     flash_image \
     dump_image \
     erase_image \
-    e2fsck
+    e2fsck \
+    SpareParts
+
+DISABLE_DEXPREOPT := false
 
 # Publish that we support the live wallpaper feature.
 PRODUCT_COPY_FILES += \
@@ -41,6 +45,7 @@ PRODUCT_COPY_FILES += \
 # Board-specific init (does not support charging in "power off" state yet)
 PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/init.thunderg.rc:root/init.thunderg.rc \
+    device/lge/thunderg/files/init.rc:root/init.rc \
     device/lge/thunderg/files/initlogo.rle:root/initlogo.rle \
     device/lge/thunderg/files/ueventd.thunderg.rc:root/ueventd.thunderg.rc \
     device/lge/thunderg/files/etc/init.local.rc:/system/etc/init.local.rc
@@ -82,9 +87,14 @@ PRODUCT_COPY_FILES += \
     vendor/lge/thunderg/proprietary/etc/wl/rtecdc-apsta.bin:system/etc/wl/rtecdc-apsta.bin \
     vendor/lge/thunderg/proprietary/etc/wl/rtecdc-mfgtest.bin:system/etc/wl/rtecdc-mfgtest.bin
 
+PRODUCT_COPY_FILES += \
+    device/lge/thunderg/files/lib/modules/tun.ko:system/lib/modules/tun.ko \
+
 # SD Card
 PRODUCT_COPY_FILES += \
-    device/lge/thunderg/files/etc/vold.fstab:system/etc/vold.fstab
+    device/lge/thunderg/files/etc/vold.fstab:system/etc/vold.fstab \
+    device/lge/thunderg/files/bin/make-storage.sh:system/bin/make-storage.sh \
+    device/lge/thunderg/files/bin/make-adb.sh:system/bin/make-adb.sh \
 
 # Audio
 PRODUCT_COPY_FILES += \
@@ -194,10 +204,28 @@ PRODUCT_COPY_FILES += \
     vendor/lge/thunderg/proprietary/lib/libOmxVidEnc.so:system/lib/libOmxVidEnc.so \
     vendor/lge/thunderg/proprietary/lib/libOmxWmaDec.so:system/lib/libOmxWmaDec.so \
     vendor/lge/thunderg/proprietary/lib/libOmxWmvDec.so:system/lib/libOmxWmvDec.so \
+    vendor/lge/thunderg/proprietary/lib/libomx_aacdec_sharedlibrary.so:system/lib/libomx_aacdec_sharedlibrary.so \
+    vendor/lge/thunderg/proprietary/lib/libomx_amrdec_sharedlibrary.so:system/lib/libomx_amrdec_sharedlibrary.so \
+    vendor/lge/thunderg/proprietary/lib/libomx_amrenc_sharedlibrary.so:system/lib/libomx_amrenc_sharedlibrary.so \
+    vendor/lge/thunderg/proprietary/lib/libomx_avcdec_sharedlibrary.so:system/lib/libomx_avcdec_sharedlibrary.so \
+    vendor/lge/thunderg/proprietary/lib/libomx_m4vdec_sharedlibrary.so:system/lib/libomx_m4vdec_sharedlibrary.so \
+    vendor/lge/thunderg/proprietary/lib/libomx_mp3dec_sharedlibrary.so:system/lib/libomx_mp3dec_sharedlibrary.so \
+    vendor/lge/thunderg/proprietary/lib/libomx_nextreaming_divxdec_sharedlibrary.so:system/lib/libomx_nextreaming_divxdec_sharedlibrary.so \
+    vendor/lge/thunderg/proprietary/lib/libomx_nextreaming_wmadec_sharedlibrary.so:system/lib/libomx_nextreaming_wmadec_sharedlibrary.so \
+    vendor/lge/thunderg/proprietary/lib/libomx_nextreaming_wmvdec_sharedlibrary.so:system/lib/libomx_nextreaming_wmvdec_sharedlibrary.so \
+    vendor/lge/thunderg/proprietary/lib/libomx_sharedlibrary.so:system/lib/libomx_sharedlibrary.so \
+#    vendor/lge/thunderg/proprietary/lib/libopencore_author.so:system/lib/libopencore_author.so \
+#    vendor/lge/thunderg/proprietary/lib/libopencore_player.so:system/lib/libopencore_player.so \
+#    vendor/lge/thunderg/proprietary/lib/libopencore_mp4local.so:system/lib/libopencore_mp4local.so \
+#    vendor/lge/thunderg/proprietary/lib/libopencore_mp4localreg.so:system/lib/libopencore_mp4localreg.so \
+#    vendor/lge/thunderg/proprietary/lib/libopencorehw.so:system/lib/libopencorehw.so \
 
 # Bluetooth
 PRODUCT_COPY_FILES += \
     vendor/lge/thunderg/proprietary/bin/BCM4325D1_004.002.004.0218.0248.hcd:system/bin/BCM4325D1_004.002.004.0218.0248.hcd \
+
+PRODUCT_COPY_FILES += \
+    device/lge/thunderg/files/etc/media_profiles.xml:system/etc/media_profiles.xml
 
 PRODUCT_LOCALES += mdpi
 

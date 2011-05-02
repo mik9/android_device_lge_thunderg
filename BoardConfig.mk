@@ -14,6 +14,7 @@ TARGET_BOOTLOADER_BOARD_NAME := thunderg
 TARGET_LIBAGL_USE_GRALLOC_COPYBITS := true
 BOARD_NO_RGBX_8888 := true
 BOARD_USE_NASTY_PTHREAD_CREATE_HACK := true
+TARGET_USES_16BPPSURFACE_FOR_OPAQUE := true
 
 TARGET_PROVIDES_INIT_TARGET_RC := true
 
@@ -37,6 +38,7 @@ BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := thunderg
 BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 50000
 
 BOARD_USE_USB_MASS_STORAGE_SWITCH := true
+BOARD_CUSTOM_USB_CONTROLLER := ../../device/lge/thunderg/netd/UsbController.cpp
 
 # VER_0_6_X does not search networks
 WPA_SUPPLICANT_VERSION := VER_0_5_X
@@ -47,6 +49,7 @@ WIFI_DRIVER_MODULE_ARG := "firmware_path=/system/etc/wl/rtecdc.bin nvram_path=/s
 WIFI_DRIVER_MODULE_NAME := wireless
 WIFI_DRIVER_FW_STA_PATH := "/system/etc/wl/rtecdc.bin"
 WIFI_DRIVER_FW_AP_PATH := "/system/etc/wl/rtecdc-apsta.bin"
+WIFI_DRIVER_HAS_LGE_SOFTAP := true
 
 BOARD_EGL_CFG := device/lge/thunderg/files/lib/egl/egl.cfg
 
@@ -74,7 +77,9 @@ BOARD_FLASH_BLOCK_SIZE := 131072
 #BOARD_HAS_NO_SELECT_BUTTON := true
 WITH_DEXPREOPT := true
 
-#JS_ENGINE := v8
+WITH_JIT := true
+ENABLE_JSC_JIT := true
+JS_ENGINE := v8
 
 TARGET_PROVIDES_LIBAUDIO := true 
 #TARGET_PROVIDES_LIBRIL := true
@@ -83,4 +88,4 @@ BOARD_UMS_LUNFILE := /sys/devices/platform/msm_hsusb/gadget/lun0/file
 
 BOARD_HAVE_FM_RADIO := true
 BOARD_GLOBAL_CFLAGS += -DHAVE_FM_RADIO
-BOARD_USE_BROADCOM_FM_VOLUME_HACK := true
+TARGET_SF_NEEDS_REAL_DIMENSIONS := true

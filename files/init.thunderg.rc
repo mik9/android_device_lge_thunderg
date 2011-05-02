@@ -92,12 +92,18 @@ on boot
 
 # WIFI
 	mkdir /data/misc/wifi/sockets 0770 wifi wifi
-
 #DHCP
     mkdir /data/misc/dhcp 0777 system system
+    chmod 0666 /data/bdaddr
 
-# DBCHECK
-#        mkdir /data/dbcheck 0777 system system
+
+service bdaddr /system/bin/bdaddr_read
+    user root
+    disabled
+    oneshot
+
+on property:init.svc.bootanim=running
+    start bdaddr
 
 service hciattach /system/bin/brcm_patchram_plus -d --baudrate 3000000 --patchram /system/bin/BCM4325D1_004.002.004.0218.0248.hcd --enable_hci /dev/ttyHS0
     user bluetooth
@@ -115,12 +121,12 @@ service wpa_supplicant /system/bin/wpa_supplicant -Dwext -iwlan0 -c/data/misc/wi
 	disabled
 	oneshot
 
-service dhcpcd /system/bin/dhcpcd -B wlan0
+service dhcpcd_wlan0 /system/bin/dhcpcd -B wlan0
 	disabled
 	oneshot
 
 on property:init.svc.wpa_supplicant=stopped
-    stop dhcpcd
+    stop dhcpcd_wlan0
 
 # bugreport is triggered by the KEY_VOLUME_DOWN and KEY_MENU keycodes
 service bugreport /system/bin/logwrapper /system/bin/dumpstate -d -v -o /sdcard/bugreports/bugreport
@@ -143,15 +149,31 @@ service wiperiface /system/bin/wiperiface
 #    socket port_bridge stream 660 root radio
 #    disabled
 
-service port-bridge /system/bin/port-bridge /dev/smd0 /dev/ttyGS0
-    socket port_bridge stream 660 root radio
-	disabled
+#service port-bridge /system/bin/port-bridge /dev/smd0 /dev/ttyGS0
+#    socket port_bridge stream 660 root radio
+#	disabled
 
-on property:init.svc.bootanim=stopped
-	start port-bridge
+#on property:init.svc.bootanim=stopped
+#	start port-bridge
 
-service netmgrd /system/bin/netmgrd -E
+#service netmgrd /system/bin/netmgrd -E
+#    disabled
+
+#on property:ro.use_data_netmgrd=true
+#    start netmgrd
+
+service make-storage /system/bin/sh /system/bin/make-storage.sh
+    user root
     disabled
+    oneshot
 
-on property:ro.use_data_netmgrd=true
-    start netmgrd
+service make-adb /system/bin/sh /system/bin/make-adb.sh
+    user root
+    disabled
+    oneshot
+
+on property:persist.service.adb.enable=1
+    start make-adb
+
+on property:persist.service.adb.enable=0
+    start make-storage

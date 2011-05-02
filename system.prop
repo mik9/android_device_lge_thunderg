@@ -18,12 +18,10 @@ DEVICE_PROVISIONED=1
 ro.lge.vibrator_amp=125
 ## wifi
 wifi.interface=wlan0
-wifi.supplicant_scan_interval=120
+wifi.supplicant_scan_interval=20
 ## opengles 2.0
 ro.opengles.version=131072
 #ro.ril.ecclist=112,911
-ro.ril.hsxpa=2
-ro.ril.gprsclass=10
 # camera/camcorder options, hyejin.kim@lge.com
 ro.media.enc.hprof.file.format=mp4
 ro.media.enc.hprof.codec.vid=m4v
@@ -73,11 +71,9 @@ ro.media.dec.vid.wmv.enabled=0
 ro.media.cam.preview.fps=0
 ro.media.dec.jpeg.memcap=20000000
 ro.media.enc.jpeg.quality=90,80,70
-# LGE_CHANGE_S, [jeongmini.park@lge.com], 2010-05-03, < Enabed EONS feature >
 persist.cust.tel.eons=1
-# LGE_CHANGE_E, [jeongmini.park@lge.com], 2010-05-03, < Enabed EONS feature >
-#increase dalvik heap size, yongchan.jeong@lge.com, 20100719
 dalvik.vm.dexopt-flags=m=y
 dalvik.vm.heapsize=32m
 dalvik.vm.execution-mode=int:jit
-windowsmsg.max_events_per_sec=60
+windowsmgr.max_events_per_sec=260
+ro.telephony.call_ring.multiple=false

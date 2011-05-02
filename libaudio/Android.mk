@@ -11,7 +11,9 @@ LOCAL_SHARED_LIBRARIES := \
     libcutils \
     libutils \
     libmedia \
-    libhardware_legacy
+    libhardware_legacy \
+    libcutils \
+    libsysutils
 
 ifeq ($TARGET_OS)-$(TARGET_SIMULATOR),linux-true)
 LOCAL_LDLIBS += -ldl
@@ -31,8 +33,6 @@ ifeq ($(BOARD_HAVE_BLUETOOTH),true)
 endif
 
 include $(BUILD_SHARED_LIBRARY)
-
-LOCAL_PATH := hardware/msm7k/libaudio
 
 include $(CLEAR_VARS)
 

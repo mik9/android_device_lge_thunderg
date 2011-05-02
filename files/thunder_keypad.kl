@@ -37,7 +37,7 @@ key 217   SEARCH	    WAKE_DROPPED
 
 key 226   HEADSETHOOK       WAKE
 key 116   POWER             WAKE
-key 107   ENDCALL           WAKE_DROPPED
+key 107   POWER           WAKE_DROPPED
 
 key 16    Q
 key 17    W
