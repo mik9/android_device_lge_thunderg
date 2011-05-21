@@ -22,7 +22,6 @@
 
 #include <utils/threads.h>
 #include <utils/SortedVector.h>
-#include <sysutils/NetlinkListener.h>
 
 #include <hardware_legacy/AudioHardwareBase.h>
 
@@ -61,6 +60,9 @@ namespace android {
 #define AGC_ENABLE     0x0001
 #define NS_ENABLE      0x0002
 #define TX_IIR_ENABLE  0x0004
+
+#define DEVICE_OUT_SPEAKER_IN_CALL 0x2000
+#define DEVICE_OUT_SPEAKER_RING 0x4000
 
 struct eq_filter_type {
     int16_t gain;
@@ -153,7 +155,6 @@ enum tty_modes {
 #define AUDIO_HW_IN_FORMAT (AudioSystem::PCM_16_BIT)  // Default audio input sample format
 // ----------------------------------------------------------------------------
 
-class NetlinkHandler;
 class AudioHardware : public  AudioHardwareBase
 {
     class AudioStreamOutMSM72xx;
@@ -169,7 +170,6 @@ public:
 #ifdef HAVE_FM_RADIO
     virtual status_t    setFmVolume(float volume);
 #endif
-    void setHookMode(bool mode);
     virtual status_t    setMode(int mode);
 
     // mic mute
@@ -217,8 +217,6 @@ private:
 #ifdef HAVE_FM_RADIO
     status_t    setFmOnOff(bool onoff);
 #endif
-    NetlinkHandler* mHandler;
-    int mSock;
     AudioStreamInMSM72xx*   getActiveInput_l();
 
     class AudioStreamOutMSM72xx : public AudioStreamOut {
@@ -319,24 +317,6 @@ private:
 
      friend class AudioStreamInMSM72xx;
             Mutex       mLock;
-};
-
-
-#include <sysutils/NetlinkListener.h>
-
-class NetlinkHandler: public NetlinkListener {
-
-public:
-    NetlinkHandler(int listenerSocket, AudioHardware* audio);
-    virtual ~NetlinkHandler();
-
-    int start(void);
-    int stop(void);
-
-private:
-    AudioHardware* mAudio;
-protected:
-    virtual void onEvent(NetlinkEvent *evt);
 };
 
 // ----------------------------------------------------------------------------
