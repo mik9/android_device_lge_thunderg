@@ -195,52 +195,6 @@ AudioHardware::AudioHardware() :
         ioctl(m7xsnddriverfd, SND_AVC_CTL, &AUTO_VOLUME_ENABLED2);
         ioctl(m7xsnddriverfd, SND_AGC_CTL, &AUTO_VOLUME_ENABLED);
     }else LOGE("Could not open MSM SND driver.");
-//-----------------------------
-    struct sockaddr_nl nladdr;
-    int sz = 64 * 1024;
-    int on = 1;
-
-    memset(&nladdr, 0, sizeof(nladdr));
-    nladdr.nl_family = AF_NETLINK;
-    nladdr.nl_pid = getpid();
-    nladdr.nl_groups = 0xffffffff;
-
-    if ((mSock = socket(PF_NETLINK,
-                        SOCK_DGRAM,NETLINK_KOBJECT_UEVENT)) < 0) {
-        SLOGE("Unable to create uevent socket: %s", strerror(errno));
-        return;
-    }
-
-    if (setsockopt(mSock, SOL_SOCKET, SO_RCVBUFFORCE, &sz, sizeof(sz)) < 0) {
-        SLOGE("Unable to set uevent socket options: %s", strerror(errno));
-        return;
-    }
-
-    if (setsockopt(mSock, SOL_SOCKET, SO_PASSCRED, &on, sizeof(on)) < 0) {
-        SLOGE("Unable to set uevent socket SO_PASSCRED option: %s", strerror(errno));
-        return;
-    }
-
-    if (bind(mSock, (struct sockaddr *) &nladdr, sizeof(nladdr)) < 0) {
-        SLOGE("Unable to bind uevent socket: %s", strerror(errno));
-        return;
-    }
-
-    mHandler = new NetlinkHandler(mSock, this);
-    if (mHandler->start()) {
-        SLOGE("Unable to start NetlinkHandler: %s", strerror(errno));
-        return;
-    }
-//-----------------------------
-    FILE* tfd = fopen("/sys/devices/virtual/switch/h2w/state","r");
-    if (tfd < 0) {
-        SLOGE("Can't open h2w switch: %s", strerror(errno));
-        return;
-    }
-    char state = fgetc(tfd);
-    fclose(tfd);
-    if (state == '1')
-        setHookMode(true);
 }
 
 AudioHardware::~AudioHardware()
@@ -262,30 +216,6 @@ AudioHardware::~AudioHardware()
     }
     enable_preproc_mask = 0;
     mInit = false;
-//----------------------------
-    if (mHandler->stop()) {
-        SLOGE("Unable to stop NetlinkHandler: %s", strerror(errno));
-        goto end;
-    }
-    delete mHandler;
-    mHandler = NULL;
-
-    close(mSock);
-    mSock = -1;
-end:
-    return;
-//----------------------------
-}
-
-void AudioHardware::setHookMode(bool mode)
-{
-    msm_snd_set_hook_mode_param hook_param;
-    hook_param.mode = mode ? 1 : 0;
-    if (ioctl(m7xsnddriverfd, SND_SET_HOOK_MODE, &hook_param) < 0)
-    {
-        LOGE("MIK: ERROR");
-    }
-    LOGE("MIK: %d", hook_param.get_param);
 }
 
 status_t AudioHardware::initCheck()
@@ -1254,7 +1184,7 @@ status_t AudioHardware::setMasterVolume(float v)
     set_volume_rpc(SND_DEVICE_TTY_HEADSET, SND_METHOD_VOICE, vol, m7xsnddriverfd);
     set_volume_rpc(SND_DEVICE_TTY_HCO, SND_METHOD_VOICE, vol, m7xsnddriverfd);
     set_volume_rpc(SND_DEVICE_TTY_VCO, SND_METHOD_VOICE, vol, m7xsnddriverfd);
-    setFmVolume(1);
+    setFmVolume(0.05);
 //    set_volume_rpc(SND_DEVICE_BT_VR,   SND_METHOD_VOICE, vol, m7xsnddriverfd);
     set_volume_rpc(SND_DEVICE_HEADSET_STEREO, SND_METHOD_VOICE, vol, m7xsnddriverfd);
 //    set_volume_rpc(SND_DEVICE_IN_S_SADC_OUT_HANDSET, SND_METHOD_VOICE, vol, m7xsnddriverfd);
@@ -1464,11 +1394,11 @@ status_t AudioHardware::doRouting(AudioStreamInMSM72xx *input)
             new_snd_device = SND_DEVICE_FM_SPEAKER;
             new_post_proc_feature_mask = (ADRC_ENABLE | EQ_ENABLE | RX_IIR_ENABLE | MBADRC_ENABLE);
 #endif
-        } else if (outputDevices & AudioSystem::DEVICE_OUT_SPEAKER_IN_CALL) {
+        } else if (outputDevices & DEVICE_OUT_SPEAKER_IN_CALL) {
             LOGI("Routing audio to In-call Speaker\n");
             new_snd_device = SND_DEVICE_SPEAKER_IN_CALL;
             new_post_proc_feature_mask = (ADRC_ENABLE | EQ_ENABLE | RX_IIR_ENABLE | MBADRC_ENABLE);
-        } else if (outputDevices & AudioSystem::DEVICE_OUT_SPEAKER_RING) {
+        } else if (outputDevices & DEVICE_OUT_SPEAKER_RING) {
             LOGI("Routing audio to In-call Speaker\n");
             new_snd_device = SND_DEVICE_SPEAKER_RING;
             new_post_proc_feature_mask = (ADRC_ENABLE | EQ_ENABLE | RX_IIR_ENABLE | MBADRC_ENABLE);
@@ -1503,9 +1433,6 @@ status_t AudioHardware::doRouting(AudioStreamInMSM72xx *input)
            msm72xx_enable_postproc(true);
 
        mCurSndDevice = new_snd_device;
-       if (new_snd_device == SND_DEVICE_BT) {
-           set_volume_rpc(SND_DEVICE_CURRENT, SND_METHOD_VOICE, 5, m7xsnddriverfd);
-       }
     }
     return ret;
 }
@@ -2298,40 +2225,6 @@ String8 AudioHardware::AudioStreamInMSM72xx::getParameters(const String8& keys)
 
 extern "C" AudioHardwareInterface* createAudioHardware(void) {
     return new AudioHardware();
-}
-
-NetlinkHandler::NetlinkHandler(int listenerSocket, AudioHardware* audio) :
-                NetlinkListener(listenerSocket) {
-    mAudio = audio;
-}
-
-NetlinkHandler::~NetlinkHandler() {
-}
-
-int NetlinkHandler::start() {
-    return this->startListener();
-}
-
-int NetlinkHandler::stop() {
-    return this->stopListener();
-}
-
-void NetlinkHandler::onEvent(NetlinkEvent *evt) {
-    const char *subsys = evt->getSubsystem();
-
-    if (!subsys) {
-        SLOGW("No subsystem found in netlink event");
-        return;
-    }
-
-    if (!strcmp(subsys, "switch")) {
-        const char *name = evt->findParam("SWITCH_NAME");
-        if (name && !strcmp(name, "h2w")) {
-            const char *state = evt->findParam("SWITCH_STATE");
-            if (state)
-                mAudio->setHookMode(state[0]=='1');
-        }
-    }
 }
 
 }; // namespace android

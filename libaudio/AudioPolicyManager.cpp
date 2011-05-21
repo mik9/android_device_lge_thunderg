@@ -45,8 +45,8 @@ extern "C" void destroyAudioPolicyManager(AudioPolicyInterface *interface)
 AudioPolicyManager::AudioPolicyManager(AudioPolicyClientInterface *clientInterface)
                 : AudioPolicyManagerBase(clientInterface)
 {
-    mAvailableOutputDevices |= AudioSystem::DEVICE_OUT_SPEAKER_IN_CALL;
-    mAvailableOutputDevices |= AudioSystem::DEVICE_OUT_SPEAKER_RING;  
+    mAvailableOutputDevices |= DEVICE_OUT_SPEAKER_IN_CALL;
+    mAvailableOutputDevices |= DEVICE_OUT_SPEAKER_RING;  
 }
 
 uint32_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strategy, bool fromCache)
@@ -122,7 +122,7 @@ uint32_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strategy, boo
                 if (device) break;
             }
 #endif
-            device = availableOutputDevices & AudioSystem::DEVICE_OUT_SPEAKER_IN_CALL;
+            device = availableOutputDevices & DEVICE_OUT_SPEAKER_IN_CALL;
             if (device) break;
 
             device = availableOutputDevices & AudioSystem::DEVICE_OUT_SPEAKER;
@@ -143,7 +143,7 @@ uint32_t AudioPolicyManager::getDeviceForStrategy(routing_strategy strategy, boo
             break;
         }
         if (strategy == STRATEGY_SONIFICATION) {
-            device = mAvailableOutputDevices & AudioSystem::DEVICE_OUT_SPEAKER_RING;
+            device = mAvailableOutputDevices & DEVICE_OUT_SPEAKER_RING;
             if (device == 0) {
                 LOGE("getDeviceForStrategy() speaker device not found");
             }
@@ -209,10 +209,16 @@ status_t AudioPolicyManager::setDeviceConnectionState(AudioSystem::audio_devices
                                                   AudioSystem::device_connection_state state,
                                                   const char *device_address)
 {
-
-    if(!strcmp(device_address,"reset_fm")) {
-        resetFm(device);
+#ifdef HAVE_FM_RADIO
+    if(!strcmp(device_address,"fm_reset") && AudioSystem::isFmDevice(device)) {
+        if(state == AudioSystem::DEVICE_STATE_AVAILABLE) {
+            resetFm(device);
+            return NO_ERROR;
+        } else {
+            return NO_ERROR;
+        }
     }
+#endif
 
     LOGV("setDeviceConnectionState() device: %x, state %d, address %s", device, state, device_address);
 
@@ -456,7 +462,6 @@ status_t AudioPolicyManager::checkAndSetVolume(int stream, int index, audio_io_h
     }
 
 #ifdef HAVE_FM_RADIO
-    LOGE("MIK me here");
     float fmVolume = -1.0;
     fmVolume = computeVolume(stream, index, output, device);
     mpClientInterface->setFmVolume(fmVolume, delayMs);
