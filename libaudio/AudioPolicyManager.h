@@ -22,7 +22,6 @@
 #include <utils/KeyedVector.h>
 #include <hardware_legacy/AudioPolicyManagerBase.h>
 
-
 namespace android {
 
 class AudioPolicyManager: public AudioPolicyManagerBase

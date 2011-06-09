@@ -1256,7 +1256,7 @@ status_t AudioHardware::setMasterVolume(float v)
     set_volume_rpc(SND_DEVICE_TTY_VCO, SND_METHOD_VOICE, vol, m7xsnddriverfd);
     setFmVolume(1);
 //    set_volume_rpc(SND_DEVICE_BT_VR,   SND_METHOD_VOICE, vol, m7xsnddriverfd);
-//    set_volume_rpc(SND_DEVICE_HEADSET_STEREO, SND_METHOD_VOICE, vol, m7xsnddriverfd);
+    set_volume_rpc(SND_DEVICE_HEADSET_STEREO, SND_METHOD_VOICE, vol, m7xsnddriverfd);
 //    set_volume_rpc(SND_DEVICE_IN_S_SADC_OUT_HANDSET, SND_METHOD_VOICE, vol, m7xsnddriverfd);
 //    set_volume_rpc(SND_DEVICE_IN_S_SADC_OUT_SPEAKER_PHONE, SND_METHOD_VOICE, vol, m7xsnddriverfd);
     // We return an error code here to let the audioflinger do in-software
@@ -1428,6 +1428,18 @@ status_t AudioHardware::doRouting(AudioStreamInMSM72xx *input)
             {
                 LOGI("Routing audio to Wired Headset\n");
                 new_snd_device = SND_DEVICE_HEADSET_STEREO;
+            }
+            new_post_proc_feature_mask = (ADRC_ENABLE | EQ_ENABLE | RX_IIR_ENABLE | MBADRC_ENABLE);
+        } else if (outputDevices & AudioSystem::DEVICE_OUT_WIRED_HEADPHONE) {
+#ifdef HAVE_FM_RADIO
+            if (mFmRadioEnabled) {
+                LOGI("Routing audio to FM Headset\n");
+                new_snd_device = SND_DEVICE_FM_HEADSET;
+            } else 
+#endif
+            {
+                LOGI("Routing audio to Wired Headset\n");
+                new_snd_device = SND_DEVICE_HEADSET;
             }
             new_post_proc_feature_mask = (ADRC_ENABLE | EQ_ENABLE | RX_IIR_ENABLE | MBADRC_ENABLE);
         } else if (outputDevices & AudioSystem::DEVICE_OUT_SPEAKER) {
@@ -2306,18 +2318,19 @@ int NetlinkHandler::stop() {
 
 void NetlinkHandler::onEvent(NetlinkEvent *evt) {
     const char *subsys = evt->getSubsystem();
-    const char *state = evt->findParam("SWITCH_STATE");
-    const char *name = evt->findParam("SWITCH_NAME");
 
     if (!subsys) {
         SLOGW("No subsystem found in netlink event");
         return;
     }
 
-//    LOGE("MIK, %s %s %s", subsys, name, state);
-
-    if (!strcmp(subsys, "switch") && name && !strcmp(name, "h2w")) {
-        mAudio->setHookMode(state[0]=='1');
+    if (!strcmp(subsys, "switch")) {
+        const char *name = evt->findParam("SWITCH_NAME");
+        if (name && !strcmp(name, "h2w")) {
+            const char *state = evt->findParam("SWITCH_STATE");
+            if (state)
+                mAudio->setHookMode(state[0]=='1');
+        }
     }
 }
 
