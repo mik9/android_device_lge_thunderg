@@ -2,8 +2,7 @@ $(call inherit-product, build/target/product/full_base.mk)
 
 DEVICE_PACKAGE_OVERLAYS += device/lge/thunderg/overlay
 
-TARGET_PREBUILT_KERNEL := device/lge/thunderg/kernel_test
-#TARGET_PREBUILT_KERNEL := device/lge/thunderg/kernel_xionia
+TARGET_PREBUILT_KERNEL := device/lge/thunderg/kernel_lg
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
 	LOCAL_KERNEL := device/lge/thunderg/kernel
