@@ -24,8 +24,6 @@
 
 #define LOG_TAG "UsbController"
 #include <cutils/log.h>
-#include <cutils/properties.h>
-#include <string.h>
 
 #include "UsbController.h"
 
@@ -47,14 +45,18 @@ int UsbController::stopRNDIS() {
 }
 
 int UsbController::enableRNDIS(bool enable) {
-    property_set("net.usb_tethering", enable ? "1" : "0");
+    char value[3];
+    int fd = open("/sys/class/usb_composite/ecm/enable", O_RDWR);
+    int count = snprintf(value, sizeof(value), "%d\n", (enable ? 1 : 0));
+    write(fd, value, 3);
+    close(fd);
     return 0;
 }
 
 bool UsbController::isRNDISStarted() {
-    char value[5];
-    int fd = open("/sys/module/g_android/parameters/product_id", O_RDONLY);
-    read(fd, &value, 5);
+    char value=0;
+    int fd = open("/sys/class/usb_composite/ecm/enable", O_RDWR);
+    read(fd, &value, 1);
     close(fd);
-    return (!strncmp(value,"61a1",4) ? true : false);
+    return (value == '1' ? true : false);
 }
