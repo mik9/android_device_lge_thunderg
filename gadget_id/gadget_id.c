@@ -44,18 +44,18 @@ int main() {
     LOGI("Changing ID to UMS: %s", UMS);
 
 write:
-	fd = open(PRODUCT_ID_PATH, O_RDWR);
+    fd = open(PRODUCT_ID_PATH, O_RDWR);
 
-	if(fd < 0) {
+    if(fd < 0) {
         LOGE(stderr, "open(%s) failed: %s", PRODUCT_ID_PATH, strerror(errno));
-		goto end;
-	}
+        goto end;
+    }
     write(fd, new_id, 5);
-	close(fd);
+    close(fd);
 
 end:
-	if(remove(TMP_FILE) != 0) {
-	    LOGE("Can't remove %s: %s", TMP_FILE, strerror(errno));
-	}
-	return 0;
+    if(remove(TMP_FILE) != 0) {
+        LOGE("Can't remove %s: %s", TMP_FILE, strerror(errno));
+    }
+    return 0;
 }
