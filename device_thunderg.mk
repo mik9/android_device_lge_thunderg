@@ -91,8 +91,6 @@ PRODUCT_COPY_FILES += \
 # SD Card
 PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/etc/vold.fstab:system/etc/vold.fstab \
-    device/lge/thunderg/files/bin/make-storage.sh:system/bin/make-storage.sh \
-    device/lge/thunderg/files/bin/make-adb.sh:system/bin/make-adb.sh \
 
 # Audio
 PRODUCT_COPY_FILES += \
