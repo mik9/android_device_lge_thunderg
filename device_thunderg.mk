@@ -88,9 +88,6 @@ PRODUCT_COPY_FILES += \
     vendor/lge/thunderg/proprietary/etc/wl/rtecdc-apsta.bin:system/etc/wl/rtecdc-apsta.bin \
     vendor/lge/thunderg/proprietary/etc/wl/rtecdc-mfgtest.bin:system/etc/wl/rtecdc-mfgtest.bin
 
-PRODUCT_COPY_FILES += \
-    device/lge/thunderg/files/lib/modules/tun.ko:system/lib/modules/tun.ko \
-
 # SD Card
 PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/etc/vold.fstab:system/etc/vold.fstab \
