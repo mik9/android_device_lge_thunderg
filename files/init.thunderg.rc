@@ -106,7 +106,7 @@ service bdaddr /system/bin/bdaddr_read
 on property:init.svc.bootanim=running
     start bdaddr
 
-service hciattach /system/bin/brcm_patchram_plus -d --baudrate 3000000 --patchram /system/bin/BCM4325D1_004.002.004.0218.0248.hcd --enable_hci /dev/ttyHS0
+service hciattach /system/bin/brcm_patchram_plus -d --baudrate 4000000 --patchram /system/bin/BCM4325D1_004.002.004.0218.0248.hcd --enable_hci /dev/ttyHS0
     user bluetooth
     group bluetooth net_bt_admin
     disabled
