@@ -21,7 +21,7 @@ PRODUCT_PACKAGES += \
     lights.thunderg \
     copybit.thunderg \
     bdaddr_read \
-    gadget_id
+    bash
 
 PRODUCT_PACKAGES += \
     flash_image \
@@ -57,6 +57,7 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += \
     device/lge/thunderg/files/lib/modules/tun.ko:system/lib/modules/tun.ko \
+    device/lge/thunderg/files/lib/modules/cifs.ko:system/lib/modules/cifs.ko \
 
 # SD Card
 PRODUCT_COPY_FILES += \
