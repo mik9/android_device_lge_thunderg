@@ -2,7 +2,7 @@ USE_CAMERA_STUB := false
 BOARD_USE_FROYO_LIBCAMERA := true
 
 # inherit from the proprietary version
-#-include vendor/lge/thunderg/BoardConfigVendor.mk
+-include vendor/lge/thunderg/BoardConfigVendor.mk
 
 TARGET_BOARD_PLATFORM := msm7k
 TARGET_ARCH_VARIANT := armv6-vfp
@@ -11,14 +11,11 @@ TARGET_CPU_ABI2 := armeabi
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno200
 TARGET_BOOTLOADER_BOARD_NAME := thunderg
 
-TARGET_LIBAGL_USE_GRALLOC_COPYBITS := true
 BOARD_NO_RGBX_8888 := true
-BOARD_USE_NASTY_PTHREAD_CREATE_HACK := true
 TARGET_USES_16BPPSURFACE_FOR_OPAQUE := true
+TARGET_DO_NOT_SETS_CAN_DRAW := true
 
 TARGET_PROVIDES_INIT_TARGET_RC := true
-
-#TARGET_USES_OLD_LIBSENSORS_HAL:=true
 
 TARGET_OTA_ASSERT_DEVICE := thunderg
 
@@ -37,15 +34,12 @@ BOARD_USES_QCOM_GPS := true
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := thunderg
 BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 50000
 
-BOARD_USE_USB_MASS_STORAGE_SWITCH := true
-BOARD_CUSTOM_USB_CONTROLLER := ../../device/lge/thunderg/netd/UsbController.cpp
-
 # VER_0_6_X does not search networks
 WPA_SUPPLICANT_VERSION := VER_0_5_X
 BOARD_WPA_SUPPLICANT_DRIVER := WEXT
 BOARD_WLAN_DEVICE := bcm4325
 WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/wireless.ko"
-WIFI_DRIVER_MODULE_ARG := "firmware_path=/system/etc/wl/rtecdc.bin nvram_path=/system/etc/wl/nvram.txt"
+WIFI_DRIVER_MODULE_ARG := "firmware_path=/system/etc/wl/rtecdc.bin nvram_path=/system/etc/wl/nvram.txt config_path=/data/misc/wifi/config"
 WIFI_DRIVER_MODULE_NAME := wireless
 WIFI_DRIVER_FW_STA_PATH := "/system/etc/wl/rtecdc.bin"
 WIFI_DRIVER_FW_AP_PATH := "/system/etc/wl/rtecdc-apsta.bin"
@@ -82,9 +76,6 @@ ENABLE_JSC_JIT := true
 JS_ENGINE := v8
 
 TARGET_PROVIDES_LIBAUDIO := true
-#TARGET_PROVIDES_LIBRIL := true
-#TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/msm_hsusb/gadget/lun"
-#BOARD_UMS_LUNFILE := /sys/devices/platform/msm_hsusb/gadget/lun0/file
 
 BOARD_HAVE_FM_RADIO := true
 BOARD_GLOBAL_CFLAGS += -DHAVE_FM_RADIO
