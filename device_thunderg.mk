@@ -22,7 +22,8 @@ PRODUCT_PACKAGES += \
     lights.thunderg \
     copybit.thunderg \
     bdaddr_read \
-    gadget_id
+    gadget_id \
+    bash
 
 PRODUCT_PACKAGES += \
     flash_image \
