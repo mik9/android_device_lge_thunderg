@@ -2,17 +2,8 @@ $(call inherit-product, build/target/product/full_base.mk)
 
 DEVICE_PACKAGE_OVERLAYS += device/lge/thunderg/overlay
 
-TARGET_PREBUILT_KERNEL := device/lge/thunderg/kernel_test
-#TARGET_PREBUILT_KERNEL := device/lge/thunderg/kernel_xionia
-
-ifeq ($(TARGET_PREBUILT_KERNEL),)
-	LOCAL_KERNEL := device/lge/thunderg/kernel
-else
-	LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
-endif
-
 PRODUCT_COPY_FILES += \
-    $(LOCAL_KERNEL):kernel
+    device/lge/thunderg/kernel:kernel
 
 PRODUCT_PACKAGES += \
     librs_jni \
@@ -88,6 +79,10 @@ PRODUCT_COPY_FILES += \
     vendor/lge/thunderg/proprietary/etc/wl/rtecdc.bin:system/etc/wl/rtecdc.bin \
     vendor/lge/thunderg/proprietary/etc/wl/rtecdc-apsta.bin:system/etc/wl/rtecdc-apsta.bin \
     vendor/lge/thunderg/proprietary/etc/wl/rtecdc-mfgtest.bin:system/etc/wl/rtecdc-mfgtest.bin
+
+PRODUCT_COPY_FILES += \
+    device/lge/thunderg/files/lib/modules/cifs.ko:system/lib/modules/cifs.ko \
+    device/lge/thunderg/files/lib/modules/tun.ko:system/lib/modules/tun.ko \
 
 # SD Card
 PRODUCT_COPY_FILES += \
