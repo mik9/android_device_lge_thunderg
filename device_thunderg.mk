@@ -1,5 +1,8 @@
 $(call inherit-product, build/target/product/full_base.mk)
 
+# Inherit non-open-source blobs.
+$(call inherit-product-if-exists, vendor/lge/thunderg/thunderg-vendor.mk)
+
 DEVICE_PACKAGE_OVERLAYS += device/lge/thunderg/overlay
 
 TARGET_PREBUILT_KERNEL := device/lge/thunderg/kernel
